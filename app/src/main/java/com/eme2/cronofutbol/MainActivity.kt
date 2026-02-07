@@ -1,4 +1,4 @@
-package com.eme2.cronofutbol // IMPORTANTE: Asegúrate de que esto coincide con la primera línea de tu archivo original. Si tu paquete es distinto, cámbialo aquí.
+package com.eme2.cronofutbol // IMPORTANTE: Revisa que tu paquete sea correcto
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -20,7 +20,6 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            // Aquí llamamos a nuestra pantalla principal
             MaterialTheme {
                 Surface(
                     modifier = Modifier.fillMaxSize(),
@@ -35,31 +34,33 @@ class MainActivity : ComponentActivity() {
 
 @Composable
 fun CronoFutbolScreen() {
-    // ESTADO: Variables que guardan la información de la app
-    var tiempoEnSegundos by remember { mutableLongStateOf(0L) }
+    // ESTADO
+    var tiempoTranscurridoSegundos by remember { mutableLongStateOf(0L) }
     var estaCorriendo by remember { mutableStateOf(false) }
     var minutoInicialInput by remember { mutableStateOf("0") }
 
-    // LÓGICA DEL CRONÓMETRO
-    // Este bloque se ejecuta cada vez que 'estaCorriendo' cambia a true
+    // LÓGICA DEL CRONÓMETRO (Se ejecuta cada 100ms para precisión)
     LaunchedEffect(estaCorriendo) {
         if (estaCorriendo) {
-            val tiempoInicio = System.currentTimeMillis() - (tiempoEnSegundos * 1000)
+            val tiempoInicio = System.currentTimeMillis() - (tiempoTranscurridoSegundos * 1000)
             while (estaCorriendo) {
-                // Actualizamos el tiempo actual basándonos en la hora del sistema (más preciso)
-                tiempoEnSegundos = (System.currentTimeMillis() - tiempoInicio) / 1000
-                delay(100) // Revisamos cada décima de segundo, pero actualizamos solo visualmente
+                tiempoTranscurridoSegundos = (System.currentTimeMillis() - tiempoInicio) / 1000
+                delay(100)
             }
         }
     }
 
-    // CÁLCULO VISUAL
-    // Convertimos el texto del input a número (si falla, es 0)
+    // CÁLCULOS VISUALES
     val minutoBase = minutoInicialInput.toLongOrNull() ?: 0L
-    // El tiempo total es: lo que ha contado el crono + lo que el usuario puso de base
-    val minutosTotales = (tiempoEnSegundos / 60) + minutoBase
-    // Los segundos restantes para mostrar (opcional, si quisieras ver segundos)
-    val segundosActuales = tiempoEnSegundos % 60
+
+    // El tiempo total a mostrar suma lo que ha corrido el crono + el input del usuario (convertido a segundos)
+    val totalSegundosReales = tiempoTranscurridoSegundos + (minutoBase * 60)
+
+    val minutosAmostrar = totalSegundosReales / 60
+    val segundosAmostrar = totalSegundosReales % 60
+
+    // Formateamos para que siempre tenga dos dígitos (ej: 05 en vez de 5)
+    val textoTiempo = String.format("%02d:%02d", minutosAmostrar, segundosAmostrar)
 
     // DISEÑO VISUAL (UI)
     Column(
@@ -69,7 +70,6 @@ fun CronoFutbolScreen() {
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ) {
-        // TÍTULO
         Text(
             text = "CronoFutbol",
             fontSize = 32.sp,
@@ -79,24 +79,22 @@ fun CronoFutbolScreen() {
 
         Spacer(modifier = Modifier.height(48.dp))
 
-        // EL RELOJ GIGANTE
+        // EL RELOJ GIGANTE (Ahora MM:SS)
         Text(
-            // Aquí mostramos solo los minutos como pediste (ej: "61 min")
-            // Si quieres ver segundos pequeños, avísame.
-            text = "$minutosTotales'",
-            fontSize = 120.sp,
-            fontWeight = FontWeight.Bold
+            text = textoTiempo,
+            fontSize = 80.sp, // Un poco más pequeño para que quepan los segundos
+            fontWeight = FontWeight.Bold,
+            // Usamos una fuente monoespaciada para que los números no bailen al cambiar
+            fontFamily = androidx.compose.ui.text.font.FontFamily.Monospace
         )
-        Text(text = "minutos", fontSize = 20.sp, color = Color.Gray)
 
         Spacer(modifier = Modifier.height(32.dp))
 
-        // CONFIGURACIÓN (Solo visible si está pausado)
+        // CONFIGURACIÓN
         if (!estaCorriendo) {
             OutlinedTextField(
                 value = minutoInicialInput,
                 onValueChange = { nuevoValor ->
-                    // Solo permitimos números
                     if (nuevoValor.all { it.isDigit() }) {
                         minutoInicialInput = nuevoValor
                     }
@@ -105,32 +103,35 @@ fun CronoFutbolScreen() {
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
                 modifier = Modifier.fillMaxWidth(0.5f)
             )
+            Text(
+                text = "Ingresa el minuto desde donde quieres empezar",
+                fontSize = 12.sp,
+                color = Color.Gray,
+                modifier = Modifier.padding(top = 4.dp)
+            )
         }
 
         Spacer(modifier = Modifier.height(32.dp))
 
-        // BOTONES DE CONTROL
+        // BOTONES
         Row(horizontalArrangement = Arrangement.spacedBy(16.dp)) {
-            // Botón Iniciar / Pausar
             Button(
                 onClick = { estaCorriendo = !estaCorriendo },
                 colors = ButtonDefaults.buttonColors(
-                    containerColor = if (estaCorriendo) Color.Red else Color(0xFF4CAF50) // Verde o Rojo
-                )
+                    containerColor = if (estaCorriendo) Color.Red else Color(0xFF4CAF50)
+                ),
+                modifier = Modifier.height(50.dp)
             ) {
                 Text(
                     text = if (estaCorriendo) "PAUSAR" else "INICIAR",
-                    fontSize = 18.sp,
-                    modifier = Modifier.padding(8.dp)
+                    fontSize = 18.sp
                 )
             }
 
-            // Botón Reiniciar (Solo si está pausado y hay tiempo)
-            if (!estaCorriendo && tiempoEnSegundos > 0) {
+            if (!estaCorriendo && tiempoTranscurridoSegundos > 0) {
                 OutlinedButton(
-                    onClick = {
-                        tiempoEnSegundos = 0
-                    }
+                    onClick = { tiempoTranscurridoSegundos = 0 },
+                    modifier = Modifier.height(50.dp)
                 ) {
                     Text("Reiniciar")
                 }
