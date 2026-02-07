@@ -1,8 +1,9 @@
-package com.eme2.cronofutbol // <--- REVISA QUE ESTO COINCIDA CON TU PAQUETE
+package com.example.cronofutbol // <--- IMPORTANTE: Si tu paquete es distinto, cámbialo aquí (ej: com.alex.cronofutbol)
 
 import android.app.Notification
 import android.app.NotificationChannel
 import android.app.NotificationManager
+import android.app.PendingIntent
 import android.app.Service
 import android.content.Intent
 import android.os.Build
@@ -18,9 +19,9 @@ class CronoService : Service() {
     private val serviceScope = CoroutineScope(Dispatchers.Main + Job())
     private var timerJob: Job? = null
 
-    // Singleton: Una variable global para acceder al tiempo desde la MainActivity
+    // Singleton: Variables globales
     companion object {
-        var tiempoActualSegundos by mutableStateOf(0L) // Variable observable
+        var tiempoActualSegundos by mutableStateOf(0L)
         var estaCorriendo by mutableStateOf(false)
         const val CANAL_ID = "CronoFutbolCanal"
         const val NOTIFICACION_ID = 1
@@ -40,13 +41,12 @@ class CronoService : Service() {
             "REINICIAR" -> reiniciarCrono()
         }
 
-        return START_STICKY // Si el sistema mata el servicio, intenta revivirlo
+        return START_STICKY
     }
 
     private fun iniciarCrono(minutoInicial: Long) {
         if (estaCorriendo) return
 
-        // Si venimos de 0, aplicamos el minuto inicial
         if (tiempoActualSegundos == 0L && minutoInicial > 0) {
             tiempoActualSegundos = minutoInicial * 60
         }
@@ -57,10 +57,9 @@ class CronoService : Service() {
 
         timerJob = serviceScope.launch {
             while (estaCorriendo) {
-                delay(1000) // Contamos cada segundo
+                delay(1000)
                 tiempoActualSegundos++
 
-                // Actualizamos la notificación con el tiempo
                 val minutos = tiempoActualSegundos / 60
                 val segundos = tiempoActualSegundos % 60
                 val textoTiempo = String.format("%02d:%02d", minutos, segundos)
@@ -73,24 +72,35 @@ class CronoService : Service() {
         estaCorriendo = false
         timerJob?.cancel()
         actualizarNotificacion("Partido Pausado")
-        stopForeground(STOP_FOREGROUND_DETACH) // Quita la notificación permanente pero mantiene el servicio vivo un rato
+        stopForeground(STOP_FOREGROUND_DETACH)
     }
 
     private fun reiniciarCrono() {
         pausarCrono()
         tiempoActualSegundos = 0L
-        stopSelf() // Matamos el servicio
+        stopSelf()
     }
 
     // --- Lógica de Notificaciones ---
 
     private fun crearNotificacion(contenido: String): Notification {
+        // Intent para volver a la app al pulsar la notificación
+        val notificationIntent = Intent(this, MainActivity::class.java)
+
+        val pendingIntent = PendingIntent.getActivity(
+            this,
+            0,
+            notificationIntent,
+            PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT
+        )
+
         return NotificationCompat.Builder(this, CANAL_ID)
             .setContentTitle("CronoFutbol")
             .setContentText(contenido)
-            .setSmallIcon(android.R.drawable.ic_menu_recent_history) // Icono por defecto de Android
-            .setOnlyAlertOnce(true) // Para que no suene cada segundo
-            .setOngoing(true) // El usuario no puede quitarla deslizando
+            .setSmallIcon(android.R.drawable.ic_menu_recent_history)
+            .setOnlyAlertOnce(true)
+            .setOngoing(true)
+            .setContentIntent(pendingIntent) // Aquí vinculamos el clic
             .build()
     }
 
@@ -104,7 +114,7 @@ class CronoService : Service() {
             val canal = NotificationChannel(
                 CANAL_ID,
                 "Cronómetro Futbol",
-                NotificationManager.IMPORTANCE_LOW // Low para que no haga ruido cada segundo
+                NotificationManager.IMPORTANCE_LOW
             )
             val manager = getSystemService(NotificationManager::class.java)
             manager.createNotificationChannel(canal)
