@@ -1,4 +1,4 @@
-package com.example.cronofutbol // <--- IMPORTANTE: Si tu paquete es distinto, cámbialo aquí (ej: com.alex.cronofutbol)
+package com.eme2.cronofutbol // <--- IMPORTANTE: Si tu paquete es distinto, cámbialo aquí (ej: com.alex.cronofutbol)
 
 import android.app.Notification
 import android.app.NotificationChannel
