@@ -1,4 +1,4 @@
-package com.eme2.cronofutbol // <--- IMPORTANTE: Si tu paquete es distinto, cámbialo aquí (ej: com.alex.cronofutbol)
+package com.eme2.cronofutbol
 
 import android.app.Notification
 import android.app.NotificationChannel
@@ -72,19 +72,27 @@ class CronoService : Service() {
         estaCorriendo = false
         timerJob?.cancel()
         actualizarNotificacion("Partido Pausado")
+        // STOP_FOREGROUND_DETACH: Deja la notificación visible pero quita el servicio de primer plano
         stopForeground(STOP_FOREGROUND_DETACH)
     }
 
     private fun reiniciarCrono() {
-        pausarCrono()
+        // 1. Paramos todo
+        estaCorriendo = false
+        timerJob?.cancel()
         tiempoActualSegundos = 0L
+
+        // 2. IMPORTANTE: STOP_FOREGROUND_REMOVE
+        // Esto le dice al sistema: "Deja de ser servicio importante Y BORRA la notificación"
+        stopForeground(STOP_FOREGROUND_REMOVE)
+
+        // 3. Matamos el servicio
         stopSelf()
     }
 
     // --- Lógica de Notificaciones ---
 
     private fun crearNotificacion(contenido: String): Notification {
-        // Intent para volver a la app al pulsar la notificación
         val notificationIntent = Intent(this, MainActivity::class.java)
 
         val pendingIntent = PendingIntent.getActivity(
@@ -97,10 +105,12 @@ class CronoService : Service() {
         return NotificationCompat.Builder(this, CANAL_ID)
             .setContentTitle("CronoFutbol")
             .setContentText(contenido)
-            .setSmallIcon(R.mipmap.ic_launcher)
+            // AQUÍ EL CAMBIO: Usamos el icono vectorial que acabas de crear
+            // Si te da error en rojo, asegúrate de haber creado el icono en el Paso 1
+            .setSmallIcon(R.drawable.ic_notificacion_crono)
             .setOnlyAlertOnce(true)
             .setOngoing(true)
-            .setContentIntent(pendingIntent) // Aquí vinculamos el clic
+            .setContentIntent(pendingIntent)
             .build()
     }
 
