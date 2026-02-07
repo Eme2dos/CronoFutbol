@@ -97,7 +97,7 @@ class CronoService : Service() {
         return NotificationCompat.Builder(this, CANAL_ID)
             .setContentTitle("CronoFutbol")
             .setContentText(contenido)
-            .setSmallIcon(android.R.drawable.ic_menu_recent_history)
+            .setSmallIcon(R.mipmap.ic_launcher)
             .setOnlyAlertOnce(true)
             .setOngoing(true)
             .setContentIntent(pendingIntent) // Aquí vinculamos el clic

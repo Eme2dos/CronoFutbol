@@ -1,4 +1,4 @@
-package com.eme2.cronofutbol // <--- REVISA TU PAQUETE
+package com.eme2.cronofutbol
 
 import android.Manifest
 import android.content.Intent
@@ -25,7 +25,6 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        // Pedir permiso de notificaciones en Android 13+
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             ActivityCompat.requestPermissions(
                 this,
@@ -51,13 +50,11 @@ class MainActivity : ComponentActivity() {
 fun CronoFutbolScreen() {
     val context = LocalContext.current
 
-    // Ahora LEEMOS el estado directamente desde el Servicio (Companion Object)
     val tiempoSegundos = CronoService.tiempoActualSegundos
     val estaCorriendo = CronoService.estaCorriendo
 
     var minutoInicialInput by remember { mutableStateOf("0") }
 
-    // Cálculos visuales
     val minutosAmostrar = tiempoSegundos / 60
     val segundosAmostrar = tiempoSegundos % 60
     val textoTiempo = String.format("%02d:%02d", minutosAmostrar, segundosAmostrar)
@@ -101,7 +98,6 @@ fun CronoFutbolScreen() {
                         context.startService(intent)
                     } else {
                         intent.action = "INICIAR"
-                        // Enviamos el minuto inicial solo si estamos empezando
                         val minutoBase = minutoInicialInput.toLongOrNull() ?: 0L
                         intent.putExtra("MINUTO_INICIO", minutoBase)
                         context.startService(intent)
