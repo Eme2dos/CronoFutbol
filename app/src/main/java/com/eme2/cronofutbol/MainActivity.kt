@@ -25,9 +25,12 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        // Permisos para Android 13+
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.POST_NOTIFICATIONS), 0)
+            ActivityCompat.requestPermissions(
+                this,
+                arrayOf(Manifest.permission.POST_NOTIFICATIONS),
+                0
+            )
         }
 
         setContent {
@@ -47,7 +50,6 @@ class MainActivity : ComponentActivity() {
 fun CronoFutbolScreen() {
     val context = LocalContext.current
 
-    // Leemos el estado directamente del Servicio (Fuente única de verdad)
     val tiempoSegundos = CronoService.tiempoActualSegundos
     val estaCorriendo = CronoService.estaCorriendo
 
@@ -66,7 +68,6 @@ fun CronoFutbolScreen() {
 
         Spacer(modifier = Modifier.height(48.dp))
 
-        // Reloj
         Text(
             text = textoTiempo,
             fontSize = 80.sp,
@@ -76,7 +77,6 @@ fun CronoFutbolScreen() {
 
         Spacer(modifier = Modifier.height(32.dp))
 
-        // Input de minuto inicial (Solo visible si está parado y a cero)
         if (!estaCorriendo && tiempoSegundos == 0L) {
             OutlinedTextField(
                 value = minutoInicialInput,
@@ -89,19 +89,19 @@ fun CronoFutbolScreen() {
 
         Spacer(modifier = Modifier.height(32.dp))
 
-        // Botones de Control
         Row(horizontalArrangement = Arrangement.spacedBy(16.dp)) {
             Button(
                 onClick = {
                     val intent = Intent(context, CronoService::class.java)
                     if (estaCorriendo) {
                         intent.action = "PAUSAR"
+                        context.startService(intent)
                     } else {
                         intent.action = "INICIAR"
                         val minutoBase = minutoInicialInput.toLongOrNull() ?: 0L
                         intent.putExtra("MINUTO_INICIO", minutoBase)
+                        context.startService(intent)
                     }
-                    context.startService(intent)
                 },
                 colors = ButtonDefaults.buttonColors(containerColor = if (estaCorriendo) Color.Red else Color(0xFF4CAF50)),
                 modifier = Modifier.height(50.dp)
@@ -109,15 +109,12 @@ fun CronoFutbolScreen() {
                 Text(text = if (estaCorriendo) "PAUSAR" else "INICIAR", fontSize = 18.sp)
             }
 
-            // El botón reiniciar solo aparece si hay tiempo contado y está pausado
             if (!estaCorriendo && tiempoSegundos > 0) {
                 OutlinedButton(
                     onClick = {
                         val intent = Intent(context, CronoService::class.java)
                         intent.action = "REINICIAR"
                         context.startService(intent)
-                        // Reset visual del input
-                        minutoInicialInput = "0"
                     },
                     modifier = Modifier.height(50.dp)
                 ) {
