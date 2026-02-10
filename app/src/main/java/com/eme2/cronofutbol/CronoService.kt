@@ -72,21 +72,32 @@ class CronoService : Service() {
         estaCorriendo = false
         timerJob?.cancel()
         actualizarNotificacion("Partido Pausado")
-        // STOP_FOREGROUND_DETACH: Deja la notificación visible pero quita el servicio de primer plano
-        stopForeground(STOP_FOREGROUND_DETACH)
+        // STOP_FOREGROUND_DETACH: Mantiene la notificación pero quita la prioridad de servicio
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            stopForeground(STOP_FOREGROUND_DETACH)
+        } else {
+            stopForeground(false)
+        }
     }
 
     private fun reiniciarCrono() {
-        // 1. Paramos todo
+        // 1. Reseteamos variables
         estaCorriendo = false
         timerJob?.cancel()
         tiempoActualSegundos = 0L
 
-        // 2. IMPORTANTE: STOP_FOREGROUND_REMOVE
-        // Esto le dice al sistema: "Deja de ser servicio importante Y BORRA la notificación"
-        stopForeground(STOP_FOREGROUND_REMOVE)
+        // 2. FORZAR EL BORRADO DE LA NOTIFICACIÓN
+        val manager = getSystemService(NotificationManager::class.java)
+        manager.cancel(NOTIFICACION_ID) // <--- Esta es la línea mágica
 
-        // 3. Matamos el servicio
+        // 3. Detener el estado de Foreground
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            stopForeground(STOP_FOREGROUND_REMOVE)
+        } else {
+            stopForeground(true)
+        }
+
+        // 4. Matar el servicio
         stopSelf()
     }
 
@@ -105,8 +116,6 @@ class CronoService : Service() {
         return NotificationCompat.Builder(this, CANAL_ID)
             .setContentTitle("CronoFutbol")
             .setContentText(contenido)
-            // AQUÍ EL CAMBIO: Usamos el icono vectorial que acabas de crear
-            // Si te da error en rojo, asegúrate de haber creado el icono en el Paso 1
             .setSmallIcon(R.drawable.ic_notificacion_crono)
             .setOnlyAlertOnce(true)
             .setOngoing(true)
