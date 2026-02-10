@@ -72,12 +72,21 @@ class CronoService : Service() {
         estaCorriendo = false
         timerJob?.cancel()
         actualizarNotificacion("Partido Pausado")
+        // STOP_FOREGROUND_DETACH: Deja la notificación visible pero quita el servicio de primer plano
         stopForeground(STOP_FOREGROUND_DETACH)
     }
 
     private fun reiniciarCrono() {
-        pausarCrono()
+        // 1. Paramos todo
+        estaCorriendo = false
+        timerJob?.cancel()
         tiempoActualSegundos = 0L
+
+        // 2. IMPORTANTE: STOP_FOREGROUND_REMOVE
+        // Esto le dice al sistema: "Deja de ser servicio importante Y BORRA la notificación"
+        stopForeground(STOP_FOREGROUND_REMOVE)
+
+        // 3. Matamos el servicio
         stopSelf()
     }
 
@@ -96,7 +105,9 @@ class CronoService : Service() {
         return NotificationCompat.Builder(this, CANAL_ID)
             .setContentTitle("CronoFutbol")
             .setContentText(contenido)
-            .setSmallIcon(android.R.drawable.ic_menu_recent_history)
+            // AQUÍ EL CAMBIO: Usamos el icono vectorial que acabas de crear
+            // Si te da error en rojo, asegúrate de haber creado el icono en el Paso 1
+            .setSmallIcon(R.drawable.ic_notificacion_crono)
             .setOnlyAlertOnce(true)
             .setOngoing(true)
             .setContentIntent(pendingIntent)
