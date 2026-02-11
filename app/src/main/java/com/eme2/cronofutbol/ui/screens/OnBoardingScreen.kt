@@ -4,25 +4,23 @@ import android.Manifest
 import android.os.Build
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.NotificationsActive
+import androidx.compose.material.icons.filled.SportsSoccer
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.eme2.cronofutbol.R
 import com.eme2.cronofutbol.data.*
 
 @Composable
@@ -40,11 +38,12 @@ fun OnboardingScreen(onFinish: () -> Unit) {
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ) {
-        // --- AQUÍ ESTÁ EL CAMBIO: Usamos el icono de la app (mipmap) ---
-        Image(
-            painter = painterResource(id = R.mipmap.ic_launcher),
-            contentDescription = "Logo App",
-            modifier = Modifier.size(120.dp)
+        // VOLVEMOS AL ICONO VECTORIAL SEGURO
+        Icon(
+            imageVector = Icons.Default.SportsSoccer,
+            contentDescription = null,
+            tint = NeonGreen,
+            modifier = Modifier.size(140.dp) // Lo hacemos un poco más grande
         )
 
         Spacer(modifier = Modifier.height(40.dp))
