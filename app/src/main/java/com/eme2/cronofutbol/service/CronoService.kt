@@ -1,0 +1,139 @@
+package com.eme2.cronofutbol.service
+
+import android.app.Notification
+import android.app.NotificationChannel
+import android.app.NotificationManager
+import android.app.PendingIntent
+import android.app.Service
+import android.content.Intent
+import android.os.Build
+import android.os.IBinder
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
+import androidx.core.app.NotificationCompat
+import com.eme2.cronofutbol.MainActivity
+import com.eme2.cronofutbol.R
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.isActive
+import kotlinx.coroutines.launch
+
+class CronoService : Service() {
+
+    companion object {
+        // Variables estáticas para que la UI las lea directamente
+        var tiempoActualSegundos by mutableStateOf(0L)
+        var estaCorriendo by mutableStateOf(false)
+        var etapaActual by mutableStateOf(1)
+
+        const val CHANNEL_ID = "CronoFutbolChannel"
+        const val NOTIFICATION_ID = 1
+    }
+
+    private var serviceJob: Job? = null
+    private val serviceScope = CoroutineScope(Dispatchers.Main)
+
+    override fun onBind(intent: Intent?): IBinder? = null
+
+    override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
+        when (intent?.action) {
+            "INICIAR" -> {
+                val minInicio = intent.getLongExtra("MINUTO_INICIO", 0L)
+                val etapa = intent.getIntExtra("ETAPA", 1)
+                iniciarCrono(minInicio, etapa)
+            }
+            "PAUSAR" -> pausarCrono()
+            "REINICIAR" -> reiniciarCrono()
+        }
+        return START_STICKY
+    }
+
+    private fun iniciarCrono(minutoInicio: Long, etapa: Int) {
+        if (estaCorriendo) return
+
+        if (!estaCorriendo && tiempoActualSegundos == 0L) {
+            tiempoActualSegundos = minutoInicio * 60
+        }
+
+        etapaActual = etapa
+        estaCorriendo = true
+        startForeground(NOTIFICATION_ID, crearNotificacion())
+
+        serviceJob = serviceScope.launch {
+            while (isActive && estaCorriendo) {
+                delay(1000L)
+                tiempoActualSegundos++
+                actualizarNotificacion()
+            }
+        }
+    }
+
+    private fun pausarCrono() {
+        estaCorriendo = false
+        serviceJob?.cancel()
+        actualizarNotificacion() // Actualiza para mostrar que está pausado
+        // No detenemos el servicio completamente para mantener la notificación
+        // y que el sistema no mate el proceso tan rápido.
+    }
+
+    private fun reiniciarCrono() {
+        estaCorriendo = false
+        serviceJob?.cancel()
+        tiempoActualSegundos = 0L
+        etapaActual = 1
+        stopForeground(STOP_FOREGROUND_REMOVE)
+        stopSelf()
+    }
+
+    private fun crearNotificacion(): Notification {
+        crearCanalNotificacion()
+
+        val intent = Intent(this, MainActivity::class.java).apply {
+            flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+        }
+        val pendingIntent = PendingIntent.getActivity(
+            this, 0, intent,
+            PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT
+        )
+
+        val minutos = tiempoActualSegundos / 60
+        val segundos = tiempoActualSegundos % 60
+        val tiempoTexto = String.format("%02d:%02d", minutos, segundos)
+        val estado = if (estaCorriendo) "En juego - ${etapaActual}T" else "Pausado"
+
+        return NotificationCompat.Builder(this, CHANNEL_ID)
+            .setContentTitle("CronoFutbol: $tiempoTexto")
+            .setContentText(estado)
+            .setSmallIcon(R.drawable.ic_launcher_foreground) // Asegúrate de tener un icono o usa uno de sistema
+            .setPriority(NotificationCompat.PRIORITY_LOW)
+            .setOnlyAlertOnce(true)
+            .setContentIntent(pendingIntent)
+            .setOngoing(true)
+            .build()
+    }
+
+    private fun actualizarNotificacion() {
+        val notificationManager = getSystemService(NotificationManager::class.java)
+        notificationManager.notify(NOTIFICATION_ID, crearNotificacion())
+    }
+
+    private fun crearCanalNotificacion() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            val channel = NotificationChannel(
+                CHANNEL_ID,
+                "Cronómetro Activo",
+                NotificationManager.IMPORTANCE_LOW
+            )
+            val manager = getSystemService(NotificationManager::class.java)
+            manager.createNotificationChannel(channel)
+        }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        serviceJob?.cancel()
+    }
+}
