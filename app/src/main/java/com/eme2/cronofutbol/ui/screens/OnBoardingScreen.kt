@@ -39,11 +39,10 @@ fun OnboardingScreen(onFinish: () -> Unit) {
         verticalArrangement = Arrangement.Center
     ) {
         // VOLVEMOS AL ICONO VECTORIAL SEGURO
-        Icon(
-            imageVector = Icons.Default.SportsSoccer,
-            contentDescription = null,
-            tint = NeonGreen,
-            modifier = Modifier.size(140.dp) // Lo hacemos un poco más grande
+        Image(
+            painter = painterResource(id = R.drawable.logo_app), // Usando drawable PNG, no mipmap
+            contentDescription = "Logo",
+            modifier = Modifier.size(120.dp)
         )
 
         Spacer(modifier = Modifier.height(40.dp))
