@@ -5,11 +5,12 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.graphics.Color
 
-// Definimos los colores aquí o los importamos si tienes un archivo de tema.
-// Para simplificar, los dejaré aquí como constantes privadas por ahora.
+// IMPORTANTE: NO deben ser 'private' para que ColorScreen pueda verlos
 val SportBlack = Color(0xFF121212)
 val SportGray = Color(0xFF2C2C2C)
 val PureWhite = Color(0xFFFFFFFF)
+
+// Colores seleccionables (PÚBLICOS)
 val NeonGreen = Color(0xFF00E676)
 val NeonRed = Color(0xFFFF1744)
 val NeonBlue = Color(0xFF2979FF)
@@ -19,6 +20,9 @@ val NeonPurple = Color(0xFFD500F9)
 val NeonOrange = Color(0xFFFF9100)
 val DeepBlue = Color(0xFF2962FF)
 val SkyBlue = Color(0xFF00B0FF)
+
+// La lista también debe ser pública
+val AvailableColors = listOf(NeonGreen, NeonRed, NeonBlue, NeonCyan, NeonYellow, NeonPurple, NeonOrange, DeepBlue, SkyBlue, PureWhite)
 
 object ColorManager {
     var chronoColor by mutableStateOf(NeonGreen)
