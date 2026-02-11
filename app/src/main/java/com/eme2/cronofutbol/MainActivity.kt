@@ -616,7 +616,20 @@ fun CronoFutbolScreen(onMenuClick: () -> Unit) {
         Row(modifier = Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
             IconButton(onClick = onMenuClick) { Icon(Icons.Default.Menu, contentDescription = null, tint = PureWhite, modifier = Modifier.size(32.dp)) }
             Spacer(modifier = Modifier.width(16.dp))
-            Text(text = LanguageManager.s.appTitulo, style = TextStyle(fontSize = 24.sp, fontWeight = FontWeight.Black, fontFamily = FontFamily.Monospace, fontStyle = FontStyle.Italic, letterSpacing = 2.sp, color = PureWhite))
+            // --- CORRECCIÓN VISUAL TÍTULO ---
+            Text(
+                text = LanguageManager.s.appTitulo,
+                style = TextStyle(
+                    fontSize = 20.sp, // Reducido de 24 a 20
+                    fontWeight = FontWeight.Black,
+                    fontFamily = FontFamily.Monospace,
+                    fontStyle = FontStyle.Italic,
+                    letterSpacing = 0.sp, // Eliminado el espaciado extra
+                    color = PureWhite
+                ),
+                maxLines = 1,
+                softWrap = false
+            )
         }
         Spacer(modifier = Modifier.height(30.dp))
 
