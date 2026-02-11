@@ -8,6 +8,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AccessTime
+import androidx.compose.material.icons.filled.Help
 import androidx.compose.material.icons.filled.History
 import androidx.compose.material.icons.filled.Language
 import androidx.compose.material.icons.filled.MusicNote
@@ -34,7 +35,6 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         LanguageManager.init(this)
 
-        // Comprobamos si el onboarding ya se hizo
         val prefs = getSharedPreferences("CronoPrefs", Context.MODE_PRIVATE)
         val onboardingCompleto = prefs.getBoolean("onboarding_completed", false)
 
@@ -87,6 +87,8 @@ fun CronoFutbolApp() {
                     ModernDrawerItem(LanguageManager.s.menuTiempo, Icons.Default.AccessTime) { navController.navigate("time_settings"); scope.launch { drawerState.close() } }
                     ModernDrawerItem(LanguageManager.s.menuColores, Icons.Default.Palette) { navController.navigate("colors"); scope.launch { drawerState.close() } }
                     ModernDrawerItem(LanguageManager.s.menuIdioma, Icons.Default.Language) { navController.navigate("language"); scope.launch { drawerState.close() } }
+                    // NUEVO ITEM: AYUDA
+                    ModernDrawerItem(LanguageManager.s.menuAyuda, Icons.Default.Help) { navController.navigate("help"); scope.launch { drawerState.close() } }
                 }
             }
         }
@@ -98,6 +100,8 @@ fun CronoFutbolApp() {
             composable("time_settings") { TimeSettingsScreen(onBackClick = { navController.popBackStack() }) }
             composable("history") { HistoryScreen(onBackClick = { navController.popBackStack() }) }
             composable("language") { LanguageScreen(onBackClick = { navController.popBackStack() }) }
+            // NUEVA PANTALLA
+            composable("help") { HelpScreen(onBackClick = { navController.popBackStack() }) }
         }
     }
 }

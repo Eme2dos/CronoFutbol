@@ -13,6 +13,7 @@ interface AppStrings {
     val menuTiempo: String
     val menuColores: String
     val menuIdioma: String
+    val menuAyuda: String // NUEVO
     val appTitulo: String
     val btnPausar: String
     val btn1Tiempo: String
@@ -50,6 +51,14 @@ interface AppStrings {
     val welcomeTitulo: String
     val welcomeDesc: String
     val welcomeBtn: String
+    // NUEVOS CAMPOS DE AYUDA
+    val ayudaTitulo: String
+    val ayudaIntro: String
+    val ayudaPaso1: String
+    val ayudaPaso2: String
+    val ayudaPaso3: String
+    val ayudaNota: String
+    val btnWeb: String
 }
 
 object EsStrings : AppStrings {
@@ -59,6 +68,7 @@ object EsStrings : AppStrings {
     override val menuTiempo = "Ajustar Tiempo"
     override val menuColores = "Colores"
     override val menuIdioma = "Idioma"
+    override val menuAyuda = "Ayuda"
     override val appTitulo = "CRONOFUTBOL"
     override val btnPausar = "PAUSAR"
     override val btn1Tiempo = "1 TIEMPO"
@@ -96,6 +106,14 @@ object EsStrings : AppStrings {
     override val welcomeTitulo = "¡Bienvenido!"
     override val welcomeDesc = "Para que el cronómetro siga funcionando aunque apagues la pantalla, necesitamos permiso para mostrar notificaciones."
     override val welcomeBtn = "Continuar y Habilitar"
+    // AYUDA ES
+    override val ayudaTitulo = "AYUDA"
+    override val ayudaIntro = "Guía rápida para usar CronoFutbol:"
+    override val ayudaPaso1 = "1. Pulsa '1 TIEMPO' para iniciar el partido desde 00:00."
+    override val ayudaPaso2 = "2. Al terminar la primera parte, pausa el crono. Pulsa '2 TIEMPO' para iniciar la segunda parte (por defecto desde el min 45)."
+    override val ayudaPaso3 = "3. Puedes configurar el minuto de inicio del 2º tiempo en el menú 'Ajustar Tiempo'."
+    override val ayudaNota = "Nota: El cronómetro sigue funcionando aunque cierres la app o apagues la pantalla gracias a la notificación activa."
+    override val btnWeb = "Visitar web oficial"
 }
 
 object EnStrings : AppStrings {
@@ -105,6 +123,7 @@ object EnStrings : AppStrings {
     override val menuTiempo = "Time Settings"
     override val menuColores = "Colors"
     override val menuIdioma = "Language"
+    override val menuAyuda = "Help"
     override val appTitulo = "FOOTBALL TIMER"
     override val btnPausar = "PAUSE"
     override val btn1Tiempo = "1st HALF"
@@ -142,6 +161,14 @@ object EnStrings : AppStrings {
     override val welcomeTitulo = "Welcome!"
     override val welcomeDesc = "To keep the timer running even when you turn off the screen, we need permission to show notifications."
     override val welcomeBtn = "Continue & Enable"
+    // AYUDA EN
+    override val ayudaTitulo = "HELP"
+    override val ayudaIntro = "Quick guide to using Football Timer:"
+    override val ayudaPaso1 = "1. Press '1st HALF' to start the match from 00:00."
+    override val ayudaPaso2 = "2. When the first half ends, pause. Press '2nd HALF' to start the second half (default from min 45)."
+    override val ayudaPaso3 = "3. You can configure the 2nd half start minute in 'Time Settings'."
+    override val ayudaNota = "Note: The timer keeps running even if you close the app or turn off the screen thanks to the active notification."
+    override val btnWeb = "Visit official website"
 }
 
 object FrStrings : AppStrings {
@@ -151,6 +178,7 @@ object FrStrings : AppStrings {
     override val menuTiempo = "Réglage Temps"
     override val menuColores = "Couleurs"
     override val menuIdioma = "Langue"
+    override val menuAyuda = "Aide"
     override val appTitulo = "CHRONO FOOT"
     override val btnPausar = "PAUSE"
     override val btn1Tiempo = "1ère MI-TEMPS"
@@ -188,6 +216,14 @@ object FrStrings : AppStrings {
     override val welcomeTitulo = "Bienvenue !"
     override val welcomeDesc = "Pour que le chronomètre continue de fonctionner écran éteint, nous avons besoin de la permission de notification."
     override val welcomeBtn = "Continuer et Activer"
+    // AYUDA FR
+    override val ayudaTitulo = "AIDE"
+    override val ayudaIntro = "Guide rapide :"
+    override val ayudaPaso1 = "1. Appuyez sur '1ère MI-TEMPS' pour commencer à 00:00."
+    override val ayudaPaso2 = "2. Appuyez sur '2ème MI-TEMPS' pour la seconde période (par défaut min 45)."
+    override val ayudaPaso3 = "3. Configurez le début de la 2ème mi-temps dans 'Réglage Temps'."
+    override val ayudaNota = "Note : Le chrono continue de tourner grâce à la notification."
+    override val btnWeb = "Visiter le site web"
 }
 
 object ItStrings : AppStrings {
@@ -197,6 +233,7 @@ object ItStrings : AppStrings {
     override val menuTiempo = "Imposta Tempo"
     override val menuColores = "Colori"
     override val menuIdioma = "Lingua"
+    override val menuAyuda = "Aiuto"
     override val appTitulo = "CRONOFUTBOL"
     override val btnPausar = "PAUSA"
     override val btn1Tiempo = "1° TEMPO"
@@ -234,6 +271,14 @@ object ItStrings : AppStrings {
     override val welcomeTitulo = "Benvenuto!"
     override val welcomeDesc = "Affinché il cronometro funzioni anche a schermo spento, abbiamo bisogno del permesso per le notifiche."
     override val welcomeBtn = "Continua e Abilita"
+    // AYUDA IT
+    override val ayudaTitulo = "AIUTO"
+    override val ayudaIntro = "Guida rapida:"
+    override val ayudaPaso1 = "1. Premi '1° TEMPO' per iniziare da 00:00."
+    override val ayudaPaso2 = "2. Premi '2° TEMPO' per il secondo tempo (default min 45)."
+    override val ayudaPaso3 = "3. Configura l'inizio del 2° tempo in 'Imposta Tempo'."
+    override val ayudaNota = "Nota: Il cronometro continua a funzionare grazie alla notifica."
+    override val btnWeb = "Visita il sito web"
 }
 
 object DeStrings : AppStrings {
@@ -243,6 +288,7 @@ object DeStrings : AppStrings {
     override val menuTiempo = "Zeit einstellen"
     override val menuColores = "Farben"
     override val menuIdioma = "Sprache"
+    override val menuAyuda = "Hilfe"
     override val appTitulo = "FUSSBALL TIMER"
     override val btnPausar = "PAUSE"
     override val btn1Tiempo = "1. HALBZEIT"
@@ -280,6 +326,14 @@ object DeStrings : AppStrings {
     override val welcomeTitulo = "Willkommen!"
     override val welcomeDesc = "Damit der Timer auch bei ausgeschaltetem Bildschirm weiterläuft, benötigen wir die Benachrichtigungserlaubnis."
     override val welcomeBtn = "Weiter & Aktivieren"
+    // AYUDA DE
+    override val ayudaTitulo = "HILFE"
+    override val ayudaIntro = "Kurzanleitung:"
+    override val ayudaPaso1 = "1. Drücken Sie '1. HALBZEIT', um bei 00:00 zu starten."
+    override val ayudaPaso2 = "2. Drücken Sie '2. HALBZEIT' für die zweite Hälfte (Standard 45. Min)."
+    override val ayudaPaso3 = "3. Konfigurieren Sie den Start der 2. Hälfte in 'Zeit einstellen'."
+    override val ayudaNota = "Hinweis: Der Timer läuft dank der Benachrichtigung weiter."
+    override val btnWeb = "Website besuchen"
 }
 
 object PtStrings : AppStrings {
@@ -289,6 +343,7 @@ object PtStrings : AppStrings {
     override val menuTiempo = "Ajustar Tempo"
     override val menuColores = "Cores"
     override val menuIdioma = "Idioma"
+    override val menuAyuda = "Ajuda"
     override val appTitulo = "CRONOFUTBOL"
     override val btnPausar = "PAUSA"
     override val btn1Tiempo = "1º TEMPO"
@@ -326,6 +381,14 @@ object PtStrings : AppStrings {
     override val welcomeTitulo = "Bem-vindo!"
     override val welcomeDesc = "Para manter o cronômetro funcionando com a tela desligada, precisamos de permissão para notificações."
     override val welcomeBtn = "Continuar e Habilitar"
+    // AYUDA PT
+    override val ayudaTitulo = "AJUDA"
+    override val ayudaIntro = "Guia rápido:"
+    override val ayudaPaso1 = "1. Pressione '1º TEMPO' para começar do 00:00."
+    override val ayudaPaso2 = "2. Pressione '2º TEMPO' para o segundo tempo (padrão min 45)."
+    override val ayudaPaso3 = "3. Configure o início do 2º tempo em 'Ajustar Tempo'."
+    override val ayudaNota = "Nota: O cronômetro continua funcionando graças à notificação."
+    override val btnWeb = "Visitar site oficial"
 }
 
 enum class LanguageCode { AUTO, ES, EN, FR, IT, DE, PT }
