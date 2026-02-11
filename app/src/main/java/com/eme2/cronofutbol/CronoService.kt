@@ -19,13 +19,16 @@ class CronoService : Service() {
     private val serviceScope = CoroutineScope(Dispatchers.Main + Job())
     private var timerJob: Job? = null
 
-    // Variables para calcular el tiempo exacto sin gastar CPU contando de 1 en 1
     private var tiempoInicioMillis = 0L
     private var tiempoAcumuladoMillis = 0L
 
     companion object {
         var tiempoActualSegundos by mutableStateOf(0L)
         var estaCorriendo by mutableStateOf(false)
+
+        // NUEVA VARIABLE: 0 = Inicio/Reset, 1 = 1er Tiempo, 2 = 2do Tiempo
+        var etapaActual by mutableStateOf(0)
+
         const val CANAL_ID = "CronoFutbolCanal"
         const val NOTIFICACION_ID = 1
     }
@@ -36,7 +39,8 @@ class CronoService : Service() {
         when (intent?.action) {
             "INICIAR" -> {
                 val minutoInicial = intent.getLongExtra("MINUTO_INICIO", 0L)
-                iniciarCrono(minutoInicial)
+                val etapa = intent.getIntExtra("ETAPA", 1) // Recibimos qué tiempo es
+                iniciarCrono(minutoInicial, etapa)
             }
             "PAUSAR" -> pausarCrono()
             "REINICIAR" -> reiniciarCrono()
@@ -44,34 +48,31 @@ class CronoService : Service() {
         return START_STICKY
     }
 
-    private fun iniciarCrono(minutoInicial: Long) {
+    private fun iniciarCrono(minutoInicial: Long, etapa: Int) {
         if (estaCorriendo) return
 
-        // Configuración inicial eficiente
+        etapaActual = etapa // Guardamos en qué tiempo estamos
+
         if (tiempoAcumuladoMillis == 0L && minutoInicial > 0) {
             tiempoAcumuladoMillis = minutoInicial * 60 * 1000L
         }
 
-        // Marcamos la hora exacta de inicio del sistema
         tiempoInicioMillis = System.currentTimeMillis()
         estaCorriendo = true
 
         crearCanalNotificacion()
-        // Iniciamos el servicio en primer plano inmediatamente
-        startForeground(NOTIFICACION_ID, crearNotificacionBase("Partido en curso...").build())
+        val textoEtapa = if (etapa == 1) "1er Tiempo" else "2do Tiempo"
+        startForeground(NOTIFICACION_ID, crearNotificacionBase("En juego ($textoEtapa)...").build())
 
-        // Corrutina optimizada: Solo actualiza la UI, no hace cálculos pesados
         timerJob = serviceScope.launch {
             while (estaCorriendo) {
-                // Calculamos la diferencia de tiempo (Matemáticas simples = Menos batería)
                 val tiempoTranscurrido = System.currentTimeMillis() - tiempoInicioMillis + tiempoAcumuladoMillis
                 tiempoActualSegundos = tiempoTranscurrido / 1000
 
-                // Actualizamos notificación
                 val texto = formatearTiempo(tiempoActualSegundos)
-                actualizarNotificacion("Tiempo: $texto")
+                actualizarNotificacion("$textoEtapa: $texto")
 
-                delay(1000) // Esperamos 1 segundo
+                delay(1000)
             }
         }
     }
@@ -80,38 +81,29 @@ class CronoService : Service() {
         if (!estaCorriendo) return
 
         estaCorriendo = false
-        // Guardamos lo que llevamos cronometrado
         tiempoAcumuladoMillis += System.currentTimeMillis() - tiempoInicioMillis
         timerJob?.cancel()
 
         actualizarNotificacion("Partido Pausado")
-
-        // Dejamos de ser servicio prioritario pero mantenemos la notificacion (false)
-        // Esto permite que el sistema ahorre batería al no tener que garantizar recursos críticos
         stopForeground(false)
     }
 
     private fun reiniciarCrono() {
         estaCorriendo = false
+        etapaActual = 0 // Volvemos al estado inicial
         timerJob?.cancel()
 
-        // Reseteamos variables a 0
         tiempoActualSegundos = 0L
         tiempoAcumuladoMillis = 0L
         tiempoInicioMillis = 0L
 
-        // Eliminamos la notificación agresivamente
         val manager = getSystemService(NotificationManager::class.java)
         manager.cancel(NOTIFICACION_ID)
 
-        // Matamos el servicio y removemos todo rastro
         stopForeground(true)
         stopSelf()
     }
 
-    // --- Optimización de Notificaciones ---
-
-    // Creamos el "Builder" una sola vez para no gastar memoria recreándolo cada segundo
     private fun crearNotificacionBase(contenido: String): NotificationCompat.Builder {
         val notificationIntent = Intent(this, MainActivity::class.java)
         val pendingIntent = PendingIntent.getActivity(
@@ -131,11 +123,8 @@ class CronoService : Service() {
 
     private fun actualizarNotificacion(contenido: String) {
         if (!estaCorriendo && contenido != "Partido Pausado") return
-
-        val notificationManager = getSystemService(NotificationManager::class.java)
-        // Reutilizamos el builder base y solo cambiamos el texto
-        val notificacion = crearNotificacionBase(contenido).build()
-        notificationManager.notify(NOTIFICACION_ID, notificacion)
+        val manager = getSystemService(NotificationManager::class.java)
+        manager.notify(NOTIFICACION_ID, crearNotificacionBase(contenido).build())
     }
 
     private fun formatearTiempo(segundos: Long): String {
