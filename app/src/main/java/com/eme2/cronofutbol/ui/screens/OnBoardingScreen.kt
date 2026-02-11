@@ -4,23 +4,25 @@ import android.Manifest
 import android.os.Build
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.NotificationsActive
-import androidx.compose.material.icons.filled.SportsSoccer
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.eme2.cronofutbol.R
 import com.eme2.cronofutbol.data.*
 
 @Composable
@@ -31,17 +33,51 @@ fun OnboardingScreen(onFinish: () -> Unit) {
     )
 
     Column(
-        modifier = Modifier.fillMaxSize().background(SportBlack).padding(24.dp),
+        modifier = Modifier
+            .fillMaxSize()
+            .background(SportBlack)
+            .padding(24.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ) {
-        Icon(imageVector = Icons.Default.SportsSoccer, contentDescription = null, tint = NeonGreen, modifier = Modifier.size(120.dp))
+        // --- AQUÍ ESTÁ EL CAMBIO: Usamos el icono de la app (mipmap) ---
+        Image(
+            painter = painterResource(id = R.mipmap.ic_launcher),
+            contentDescription = "Logo App",
+            modifier = Modifier.size(120.dp)
+        )
+
         Spacer(modifier = Modifier.height(40.dp))
-        Text(text = LanguageManager.s.appTitulo, style = TextStyle(fontSize = 28.sp, fontWeight = FontWeight.Black, fontFamily = FontFamily.Monospace, color = PureWhite))
+
+        Text(
+            text = LanguageManager.s.appTitulo,
+            style = TextStyle(
+                fontSize = 28.sp,
+                fontWeight = FontWeight.Black,
+                fontFamily = FontFamily.Monospace,
+                color = PureWhite
+            )
+        )
+
         Spacer(modifier = Modifier.height(16.dp))
-        Text(text = LanguageManager.s.welcomeTitulo, fontSize = 22.sp, fontWeight = FontWeight.Bold, color = NeonBlue)
+
+        Text(
+            text = LanguageManager.s.welcomeTitulo,
+            fontSize = 22.sp,
+            fontWeight = FontWeight.Bold,
+            color = NeonBlue
+        )
+
         Spacer(modifier = Modifier.height(24.dp))
-        Text(text = LanguageManager.s.welcomeDesc, fontSize = 16.sp, color = Color.Gray, textAlign = TextAlign.Center, lineHeight = 24.sp)
+
+        Text(
+            text = LanguageManager.s.welcomeDesc,
+            fontSize = 16.sp,
+            color = Color.Gray,
+            textAlign = TextAlign.Center,
+            lineHeight = 24.sp
+        )
+
         Spacer(modifier = Modifier.height(60.dp))
 
         Button(
@@ -58,7 +94,12 @@ fun OnboardingScreen(onFinish: () -> Unit) {
         ) {
             Icon(Icons.Default.NotificationsActive, contentDescription = null, tint = SportBlack)
             Spacer(modifier = Modifier.width(8.dp))
-            Text(text = LanguageManager.s.welcomeBtn, fontSize = 18.sp, fontWeight = FontWeight.Bold, color = SportBlack)
+            Text(
+                text = LanguageManager.s.welcomeBtn,
+                fontSize = 18.sp,
+                fontWeight = FontWeight.Bold,
+                color = SportBlack
+            )
         }
     }
 }
