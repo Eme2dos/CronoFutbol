@@ -4,23 +4,25 @@ import android.Manifest
 import android.os.Build
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.NotificationsActive
-import androidx.compose.material.icons.filled.SportsSoccer
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.eme2.cronofutbol.R
 import com.eme2.cronofutbol.data.*
 
 @Composable
@@ -38,15 +40,17 @@ fun OnboardingScreen(onFinish: () -> Unit) {
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ) {
-        // VOLVEMOS AL ICONO VECTORIAL SEGURO
+        // --- TU LOGO PERSONALIZADO ---
+        // Asegúrate de que la imagen se llama 'logo_app.png' y está en res/drawable
         Image(
-            painter = painterResource(id = R.drawable.logo_app), // Usando drawable PNG, no mipmap
-            contentDescription = "Logo",
-            modifier = Modifier.size(120.dp)
+            painter = painterResource(id = R.drawable.logo_app),
+            contentDescription = "Logo App",
+            modifier = Modifier.size(140.dp) // Tamaño ajustado para que luzca bien
         )
 
         Spacer(modifier = Modifier.height(40.dp))
 
+        // Título de la App
         Text(
             text = LanguageManager.s.appTitulo,
             style = TextStyle(
@@ -59,6 +63,7 @@ fun OnboardingScreen(onFinish: () -> Unit) {
 
         Spacer(modifier = Modifier.height(16.dp))
 
+        // Bienvenida
         Text(
             text = LanguageManager.s.welcomeTitulo,
             fontSize = 22.sp,
@@ -68,6 +73,7 @@ fun OnboardingScreen(onFinish: () -> Unit) {
 
         Spacer(modifier = Modifier.height(24.dp))
 
+        // Explicación
         Text(
             text = LanguageManager.s.welcomeDesc,
             fontSize = 16.sp,
@@ -78,8 +84,10 @@ fun OnboardingScreen(onFinish: () -> Unit) {
 
         Spacer(modifier = Modifier.height(60.dp))
 
+        // Botón de Continuar
         Button(
             onClick = {
+                // Lógica de permisos para Android 13+ (Tiramisu)
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
                     permissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS)
                 } else {
