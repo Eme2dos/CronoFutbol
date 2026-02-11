@@ -1,6 +1,7 @@
 package com.eme2.cronofutbol.ui.screens
 
 import android.Manifest
+import android.content.pm.PackageManager
 import android.os.Build
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
@@ -12,9 +13,11 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.NotificationsActive
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontFamily
@@ -27,10 +30,26 @@ import com.eme2.cronofutbol.data.*
 
 @Composable
 fun OnboardingScreen(onFinish: () -> Unit) {
+    val context = LocalContext.current
     val permissionLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.RequestPermission(),
         onResult = { _ -> onFinish() }
     )
+
+    // OBTENER LA VERSIÓN DE LA APP AUTOMÁTICAMENTE
+    val appVersion = remember {
+        try {
+            val packageInfo = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                context.packageManager.getPackageInfo(context.packageName, PackageManager.PackageInfoFlags.of(0))
+            } else {
+                @Suppress("DEPRECATION")
+                context.packageManager.getPackageInfo(context.packageName, 0)
+            }
+            "v${packageInfo.versionName}"
+        } catch (e: Exception) {
+            "v1.0"
+        }
+    }
 
     Column(
         modifier = Modifier
@@ -40,17 +59,16 @@ fun OnboardingScreen(onFinish: () -> Unit) {
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ) {
-        // --- TU LOGO PERSONALIZADO ---
-        // Asegúrate de que la imagen se llama 'logo_app.png' y está en res/drawable
+        // LOGO
         Image(
             painter = painterResource(id = R.drawable.logo_app),
             contentDescription = "Logo App",
-            modifier = Modifier.size(140.dp) // Tamaño ajustado para que luzca bien
+            modifier = Modifier.size(140.dp)
         )
 
         Spacer(modifier = Modifier.height(40.dp))
 
-        // Título de la App
+        // TÍTULO
         Text(
             text = LanguageManager.s.appTitulo,
             style = TextStyle(
@@ -63,7 +81,7 @@ fun OnboardingScreen(onFinish: () -> Unit) {
 
         Spacer(modifier = Modifier.height(16.dp))
 
-        // Bienvenida
+        // BIENVENIDA
         Text(
             text = LanguageManager.s.welcomeTitulo,
             fontSize = 22.sp,
@@ -73,7 +91,7 @@ fun OnboardingScreen(onFinish: () -> Unit) {
 
         Spacer(modifier = Modifier.height(24.dp))
 
-        // Explicación
+        // DESCRIPCIÓN
         Text(
             text = LanguageManager.s.welcomeDesc,
             fontSize = 16.sp,
@@ -84,10 +102,9 @@ fun OnboardingScreen(onFinish: () -> Unit) {
 
         Spacer(modifier = Modifier.height(60.dp))
 
-        // Botón de Continuar
+        // BOTÓN
         Button(
             onClick = {
-                // Lógica de permisos para Android 13+ (Tiramisu)
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
                     permissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS)
                 } else {
@@ -107,5 +124,14 @@ fun OnboardingScreen(onFinish: () -> Unit) {
                 color = SportBlack
             )
         }
+
+        // --- VERSIÓN DE LA APP ---
+        Spacer(modifier = Modifier.height(30.dp))
+        Text(
+            text = appVersion,
+            color = Color.DarkGray,
+            fontSize = 12.sp,
+            fontFamily = FontFamily.Monospace
+        )
     }
 }

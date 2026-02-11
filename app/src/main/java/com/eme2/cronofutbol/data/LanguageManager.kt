@@ -13,7 +13,7 @@ interface AppStrings {
     val menuTiempo: String
     val menuColores: String
     val menuIdioma: String
-    val menuAyuda: String // NUEVO
+    val menuAyuda: String
     val appTitulo: String
     val btnPausar: String
     val btn1Tiempo: String
@@ -51,13 +51,16 @@ interface AppStrings {
     val welcomeTitulo: String
     val welcomeDesc: String
     val welcomeBtn: String
-    // NUEVOS CAMPOS DE AYUDA
+    // AYUDA
     val ayudaTitulo: String
     val ayudaIntro: String
     val ayudaPaso1: String
     val ayudaPaso2: String
     val ayudaPaso3: String
     val ayudaNota: String
+    // NUEVO: BATERIA
+    val ayudaBateriaTitulo: String
+    val ayudaBateriaDesc: String
     val btnWeb: String
 }
 
@@ -113,6 +116,8 @@ object EsStrings : AppStrings {
     override val ayudaPaso2 = "2. Al terminar la primera parte, pausa el crono. Pulsa '2 TIEMPO' para iniciar la segunda parte (por defecto desde el min 45)."
     override val ayudaPaso3 = "3. Puedes configurar el minuto de inicio del 2º tiempo en el menú 'Ajustar Tiempo'."
     override val ayudaNota = "Nota: El cronómetro sigue funcionando aunque cierres la app o apagues la pantalla gracias a la notificación activa."
+    override val ayudaBateriaTitulo = "Gestión Inteligente de Batería"
+    override val ayudaBateriaDesc = "Esta app usa fondo negro puro para ahorrar energía en pantallas OLED. Además, si pausas el cronómetro y cierras la app, el proceso se detiene completamente para un consumo 0%."
     override val btnWeb = "Visitar web oficial"
 }
 
@@ -168,6 +173,8 @@ object EnStrings : AppStrings {
     override val ayudaPaso2 = "2. When the first half ends, pause. Press '2nd HALF' to start the second half (default from min 45)."
     override val ayudaPaso3 = "3. You can configure the 2nd half start minute in 'Time Settings'."
     override val ayudaNota = "Note: The timer keeps running even if you close the app or turn off the screen thanks to the active notification."
+    override val ayudaBateriaTitulo = "Smart Battery Management"
+    override val ayudaBateriaDesc = "This app uses a pure black background to save power on OLED screens. Also, if you pause the timer and close the app, the process stops completely for 0% consumption."
     override val btnWeb = "Visit official website"
 }
 
@@ -223,6 +230,8 @@ object FrStrings : AppStrings {
     override val ayudaPaso2 = "2. Appuyez sur '2ème MI-TEMPS' pour la seconde période (par défaut min 45)."
     override val ayudaPaso3 = "3. Configurez le début de la 2ème mi-temps dans 'Réglage Temps'."
     override val ayudaNota = "Note : Le chrono continue de tourner grâce à la notification."
+    override val ayudaBateriaTitulo = "Gestion Intelligente de la Batterie"
+    override val ayudaBateriaDesc = "Cette application utilise un fond noir pur pour économiser l'énergie (OLED). De plus, si vous mettez en pause et fermez l'app, le processus s'arrête complètement (0% consommation)."
     override val btnWeb = "Visiter le site web"
 }
 
@@ -278,6 +287,8 @@ object ItStrings : AppStrings {
     override val ayudaPaso2 = "2. Premi '2° TEMPO' per il secondo tempo (default min 45)."
     override val ayudaPaso3 = "3. Configura l'inizio del 2° tempo in 'Imposta Tempo'."
     override val ayudaNota = "Nota: Il cronometro continua a funzionare grazie alla notifica."
+    override val ayudaBateriaTitulo = "Gestione Intelligente Batteria"
+    override val ayudaBateriaDesc = "Questa app utilizza uno sfondo nero puro per risparmiare energia (OLED). Inoltre, se metti in pausa e chiudi l'app, il processo si ferma completamente (0% consumi)."
     override val btnWeb = "Visita il sito web"
 }
 
@@ -333,6 +344,8 @@ object DeStrings : AppStrings {
     override val ayudaPaso2 = "2. Drücken Sie '2. HALBZEIT' für die zweite Hälfte (Standard 45. Min)."
     override val ayudaPaso3 = "3. Konfigurieren Sie den Start der 2. Hälfte in 'Zeit einstellen'."
     override val ayudaNota = "Hinweis: Der Timer läuft dank der Benachrichtigung weiter."
+    override val ayudaBateriaTitulo = "Intelligentes Batteriemanagement"
+    override val ayudaBateriaDesc = "Diese App verwendet einen rein schwarzen Hintergrund, um Energie zu sparen (OLED). Wenn Sie pausieren und die App schließen, stoppt der Prozess vollständig (0% Verbrauch)."
     override val btnWeb = "Website besuchen"
 }
 
@@ -388,6 +401,8 @@ object PtStrings : AppStrings {
     override val ayudaPaso2 = "2. Pressione '2º TEMPO' para o segundo tempo (padrão min 45)."
     override val ayudaPaso3 = "3. Configure o início do 2º tempo em 'Ajustar Tempo'."
     override val ayudaNota = "Nota: O cronômetro continua funcionando graças à notificação."
+    override val ayudaBateriaTitulo = "Gestão Inteligente de Bateria"
+    override val ayudaBateriaDesc = "Este app usa fundo preto puro para economizar energia (OLED). Além disso, se você pausar e fechar o app, o processo para completamente (consumo 0%)."
     override val btnWeb = "Visitar site oficial"
 }
 
