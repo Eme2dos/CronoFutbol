@@ -288,7 +288,6 @@ fun CronoFutbolScreen(onMenuClick: () -> Unit) {
 
         Spacer(modifier = Modifier.height(20.dp))
 
-        // --- BOTONES PRINCIPALES AJUSTADOS ---
         Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(16.dp)) {
             val enabled1 = etapaActual != 2
             Button(
@@ -299,21 +298,13 @@ fun CronoFutbolScreen(onMenuClick: () -> Unit) {
                     if (estaCorriendo && etapaActual == 1) intent.action = "PAUSAR" else { intent.action = "INICIAR"; intent.putExtra("MINUTO_INICIO", 0L); intent.putExtra("ETAPA", 1) };
                     startCronoService(context, intent)
                 },
-                enabled = enabled1,
-                shape = RoundedCornerShape(12.dp),
-                contentPadding = PaddingValues(horizontal = 4.dp, vertical = 8.dp), // Padding reducido
+                enabled = enabled1, shape = RoundedCornerShape(12.dp),
+                contentPadding = PaddingValues(horizontal = 4.dp, vertical = 8.dp),
                 colors = ButtonDefaults.buttonColors(containerColor = ColorManager.btn1Color, disabledContainerColor = ColorManager.btn1Color.copy(alpha = 0.3f)),
                 modifier = Modifier.weight(1f).height(80.dp)
             ) {
                 Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                    Text(
-                        text = if (estaCorriendo && etapaActual == 1) "PAUSAR" else "1 TIEMPO",
-                        fontSize = 14.sp, // Fuente reducida
-                        fontWeight = FontWeight.Black,
-                        color = if (enabled1) Color.White else Color.White.copy(alpha=0.5f),
-                        maxLines = 1,
-                        softWrap = false // Evita salto de línea
-                    )
+                    Text(text = if (estaCorriendo && etapaActual == 1) "PAUSAR" else "1 TIEMPO", fontSize = 14.sp, fontWeight = FontWeight.Black, color = if (enabled1) Color.White else Color.White.copy(alpha=0.5f), maxLines = 1, softWrap = false)
                     if (enabled1 && !(estaCorriendo && etapaActual == 1)) Text("Desde 00:00", fontSize = 11.sp, color = Color.White.copy(alpha=0.8f))
                 }
             }
@@ -328,21 +319,13 @@ fun CronoFutbolScreen(onMenuClick: () -> Unit) {
                     if (estaCorriendo && etapaActual == 2) intent.action = "PAUSAR" else { intent.action = "INICIAR"; val minInicio = TimeManager.secondHalfStartMinute.toLongOrNull() ?: 45L; intent.putExtra("MINUTO_INICIO", minInicio); intent.putExtra("ETAPA", 2) };
                     startCronoService(context, intent)
                 },
-                enabled = enabled2,
-                shape = RoundedCornerShape(12.dp),
-                contentPadding = PaddingValues(horizontal = 4.dp, vertical = 8.dp), // Padding reducido
+                enabled = enabled2, shape = RoundedCornerShape(12.dp),
+                contentPadding = PaddingValues(horizontal = 4.dp, vertical = 8.dp),
                 colors = ButtonDefaults.buttonColors(containerColor = ColorManager.btn2Color, disabledContainerColor = ColorManager.btn2Color.copy(alpha = 0.3f)),
                 modifier = Modifier.weight(1f).height(80.dp)
             ) {
                 Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                    Text(
-                        text = if (estaCorriendo && etapaActual == 2) "PAUSAR" else "2 TIEMPO",
-                        fontSize = 14.sp, // Fuente reducida
-                        fontWeight = FontWeight.Black,
-                        color = if (enabled2) Color.White else Color.White.copy(alpha=0.5f),
-                        maxLines = 1,
-                        softWrap = false // Evita salto de línea
-                    )
+                    Text(text = if (estaCorriendo && etapaActual == 2) "PAUSAR" else "2 TIEMPO", fontSize = 14.sp, fontWeight = FontWeight.Black, color = if (enabled2) Color.White else Color.White.copy(alpha=0.5f), maxLines = 1, softWrap = false)
                     if (enabled2 && !(estaCorriendo && etapaActual == 2)) Text("Desde ${TimeManager.secondHalfStartMinute}:00", fontSize = 11.sp, color = Color.White.copy(alpha=0.8f))
                 }
             }
@@ -350,8 +333,20 @@ fun CronoFutbolScreen(onMenuClick: () -> Unit) {
 
         Spacer(modifier = Modifier.height(24.dp))
 
+        // --- CORRECCIÓN EN EL BOTÓN REINICIAR ---
         Button(
-            onClick = { SoundManager.feedback(context); val intent = Intent(context, CronoService::class.java); intent.action = "REINICIAR"; startCronoService(context, intent); HistoryManager.limpiarTemp() },
+            onClick = {
+                SoundManager.feedback(context)
+                val intent = Intent(context, CronoService::class.java)
+                intent.action = "REINICIAR"
+
+                // FIX: Usamos startService directo en lugar de startCronoService para evitar crash.
+                // Como la app está en primer plano (botón pulsado), startService es legal
+                // y no nos obliga a mostrar notificación, lo cual evita el error.
+                context.startService(intent)
+
+                HistoryManager.limpiarTemp()
+            },
             shape = RoundedCornerShape(12.dp),
             colors = ButtonDefaults.buttonColors(containerColor = ColorManager.btnResetColor),
             modifier = Modifier.width(200.dp).height(55.dp)
