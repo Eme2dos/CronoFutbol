@@ -25,16 +25,13 @@ import com.eme2.cronofutbol.data.*
 @Composable
 fun TimeSettingsScreen(onBackClick: () -> Unit) {
     Column(modifier = Modifier.fillMaxSize().background(SportBlack).padding(top = 80.dp, start = 24.dp, end = 24.dp)) {
-        // Header
         Row(verticalAlignment = Alignment.CenterVertically) {
             IconButton(onClick = onBackClick) { Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = null, tint = PureWhite, modifier = Modifier.size(32.dp)) }
             Spacer(modifier = Modifier.width(16.dp))
             Text(LanguageManager.s.ajustesTiempoTitulo, style = TextStyle(fontSize = 22.sp, fontWeight = FontWeight.Bold, fontFamily = FontFamily.Monospace, color = PureWhite))
         }
-
         Spacer(modifier = Modifier.height(40.dp))
 
-        // Configuración del 2º tiempo
         Text(LanguageManager.s.ajustesTiempoDesc1, fontSize = 18.sp, fontWeight = FontWeight.Bold, color = PureWhite); Spacer(modifier = Modifier.height(8.dp))
         Text(LanguageManager.s.ajustesTiempoDesc2, fontSize = 14.sp, color = Color.Gray, lineHeight = 20.sp); Spacer(modifier = Modifier.height(40.dp))
         Text(LanguageManager.s.ajustesTiempoLabel, color = NeonBlue, fontSize = 16.sp, fontWeight = FontWeight.Bold); Spacer(modifier = Modifier.height(16.dp))

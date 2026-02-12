@@ -178,7 +178,6 @@ fun TeamColumn(name: String, score: Int, onNameChange: (String) -> Unit, onAdd: 
 
 @Composable
 fun BotonesControl(context: Context, estaCorriendo: Boolean, etapaActual: Int, tiempoSegundos: Long) {
-    // CORRECCIÓN: Agregamos una Column contenedora para que la alineación funcione
     Column(modifier = Modifier.fillMaxWidth(), horizontalAlignment = Alignment.CenterHorizontally) {
         Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(16.dp)) {
             val enabled1 = etapaActual != 2
@@ -232,7 +231,7 @@ fun BotonesControl(context: Context, estaCorriendo: Boolean, etapaActual: Int, t
             },
             shape = RoundedCornerShape(12.dp),
             colors = ButtonDefaults.buttonColors(containerColor = ColorManager.btnResetColor),
-            modifier = Modifier.width(200.dp).height(55.dp) // Ya no necesitamos .align() aquí porque la Column padre centra
+            modifier = Modifier.width(200.dp).height(55.dp)
         ) {
             Icon(Icons.Default.Refresh, contentDescription = null, tint = Color.White)
             Spacer(modifier = Modifier.width(8.dp))
