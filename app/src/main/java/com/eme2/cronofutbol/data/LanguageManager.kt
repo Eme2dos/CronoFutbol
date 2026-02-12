@@ -14,6 +14,7 @@ interface AppStrings {
     val menuColores: String
     val menuIdioma: String
     val menuAyuda: String
+    val menuMarcador: String // NUEVO
     val appTitulo: String
     val btnPausar: String
     val btn1Tiempo: String
@@ -51,17 +52,19 @@ interface AppStrings {
     val welcomeTitulo: String
     val welcomeDesc: String
     val welcomeBtn: String
-    // AYUDA
     val ayudaTitulo: String
     val ayudaIntro: String
     val ayudaPaso1: String
     val ayudaPaso2: String
     val ayudaPaso3: String
     val ayudaNota: String
-    // NUEVO: BATERIA
     val ayudaBateriaTitulo: String
     val ayudaBateriaDesc: String
     val btnWeb: String
+    // NUEVOS CAMPOS MARCADOR
+    val marcadorTitulo: String
+    val marcadorSwitchLabel: String
+    val marcadorDesc: String
 }
 
 object EsStrings : AppStrings {
@@ -72,6 +75,7 @@ object EsStrings : AppStrings {
     override val menuColores = "Colores"
     override val menuIdioma = "Idioma"
     override val menuAyuda = "Ayuda"
+    override val menuMarcador = "Marcador / Acta"
     override val appTitulo = "CRONOFUTBOL"
     override val btnPausar = "PAUSAR"
     override val btn1Tiempo = "1 TIEMPO"
@@ -109,7 +113,6 @@ object EsStrings : AppStrings {
     override val welcomeTitulo = "¡Bienvenido!"
     override val welcomeDesc = "Para que el cronómetro siga funcionando aunque apagues la pantalla, necesitamos permiso para mostrar notificaciones."
     override val welcomeBtn = "Continuar y Habilitar"
-    // AYUDA ES
     override val ayudaTitulo = "AYUDA"
     override val ayudaIntro = "Guía rápida para usar CronoFutbol:"
     override val ayudaPaso1 = "1. Pulsa '1 TIEMPO' para iniciar el partido desde 00:00."
@@ -119,6 +122,10 @@ object EsStrings : AppStrings {
     override val ayudaBateriaTitulo = "Gestión Inteligente de Batería"
     override val ayudaBateriaDesc = "Esta app usa fondo negro puro para ahorrar energía en pantallas OLED. Además, si pausas el cronómetro y cierras la app, el proceso se detiene completamente para un consumo 0%."
     override val btnWeb = "Visitar web oficial"
+    // NUEVOS ES
+    override val marcadorTitulo = "MARCADOR Y ACTA"
+    override val marcadorSwitchLabel = "Activar modo Acta"
+    override val marcadorDesc = "Al activar esta opción, la pantalla principal cambia para permitirte introducir nombres de equipos, llevar el conteo de goles y registrar eventos minuto a minuto. Ideal para árbitros o delegados."
 }
 
 object EnStrings : AppStrings {
@@ -129,6 +136,7 @@ object EnStrings : AppStrings {
     override val menuColores = "Colors"
     override val menuIdioma = "Language"
     override val menuAyuda = "Help"
+    override val menuMarcador = "Scoreboard / Sheet"
     override val appTitulo = "FOOTBALL TIMER"
     override val btnPausar = "PAUSE"
     override val btn1Tiempo = "1st HALF"
@@ -166,7 +174,6 @@ object EnStrings : AppStrings {
     override val welcomeTitulo = "Welcome!"
     override val welcomeDesc = "To keep the timer running even when you turn off the screen, we need permission to show notifications."
     override val welcomeBtn = "Continue & Enable"
-    // AYUDA EN
     override val ayudaTitulo = "HELP"
     override val ayudaIntro = "Quick guide to using Football Timer:"
     override val ayudaPaso1 = "1. Press '1st HALF' to start the match from 00:00."
@@ -176,6 +183,10 @@ object EnStrings : AppStrings {
     override val ayudaBateriaTitulo = "Smart Battery Management"
     override val ayudaBateriaDesc = "This app uses a pure black background to save power on OLED screens. Also, if you pause the timer and close the app, the process stops completely for 0% consumption."
     override val btnWeb = "Visit official website"
+    // NUEVOS EN
+    override val marcadorTitulo = "SCOREBOARD & SHEET"
+    override val marcadorSwitchLabel = "Enable Match Sheet"
+    override val marcadorDesc = "Enabling this option changes the main screen to allow team names input, goal tracking, and minute-by-minute event logging. Ideal for referees."
 }
 
 object FrStrings : AppStrings {
@@ -186,6 +197,7 @@ object FrStrings : AppStrings {
     override val menuColores = "Couleurs"
     override val menuIdioma = "Langue"
     override val menuAyuda = "Aide"
+    override val menuMarcador = "Tableau / Feuille"
     override val appTitulo = "CHRONO FOOT"
     override val btnPausar = "PAUSE"
     override val btn1Tiempo = "1ère MI-TEMPS"
@@ -197,6 +209,7 @@ object FrStrings : AppStrings {
     override val guardarDialogLabel = "Nom du match"
     override val btnGuardar = "Sauvegarder"
     override val btnCancelar = "Annuler"
+    override val développéPar = "Développé par MLaOrden"
     override val desarrolladoPor = "Développé par MLaOrden"
     override val historialTitulo = "HISTORIQUE"
     override val historialSwitch = "Enregistrer sessions"
@@ -223,7 +236,6 @@ object FrStrings : AppStrings {
     override val welcomeTitulo = "Bienvenue !"
     override val welcomeDesc = "Pour que le chronomètre continue de fonctionner écran éteint, nous avons besoin de la permission de notification."
     override val welcomeBtn = "Continuer et Activer"
-    // AYUDA FR
     override val ayudaTitulo = "AIDE"
     override val ayudaIntro = "Guide rapide :"
     override val ayudaPaso1 = "1. Appuyez sur '1ère MI-TEMPS' pour commencer à 00:00."
@@ -233,6 +245,10 @@ object FrStrings : AppStrings {
     override val ayudaBateriaTitulo = "Gestion Intelligente de la Batterie"
     override val ayudaBateriaDesc = "Cette application utilise un fond noir pur pour économiser l'énergie (OLED). De plus, si vous mettez en pause et fermez l'app, le processus s'arrête complètement (0% consommation)."
     override val btnWeb = "Visiter le site web"
+    // NUEVOS FR
+    override val marcadorTitulo = "TABLEAU DE SCORE"
+    override val marcadorSwitchLabel = "Activer Feuille de Match"
+    override val marcadorDesc = "Activez cette option pour saisir les noms des équipes, suivre les buts et enregistrer les événements minute par minute."
 }
 
 object ItStrings : AppStrings {
@@ -243,6 +259,7 @@ object ItStrings : AppStrings {
     override val menuColores = "Colori"
     override val menuIdioma = "Lingua"
     override val menuAyuda = "Aiuto"
+    override val menuMarcador = "Tabellone / Referto"
     override val appTitulo = "CRONOFUTBOL"
     override val btnPausar = "PAUSA"
     override val btn1Tiempo = "1° TEMPO"
@@ -280,7 +297,6 @@ object ItStrings : AppStrings {
     override val welcomeTitulo = "Benvenuto!"
     override val welcomeDesc = "Affinché il cronometro funzioni anche a schermo spento, abbiamo bisogno del permesso per le notifiche."
     override val welcomeBtn = "Continua e Abilita"
-    // AYUDA IT
     override val ayudaTitulo = "AIUTO"
     override val ayudaIntro = "Guida rapida:"
     override val ayudaPaso1 = "1. Premi '1° TEMPO' per iniziare da 00:00."
@@ -290,6 +306,10 @@ object ItStrings : AppStrings {
     override val ayudaBateriaTitulo = "Gestione Intelligente Batteria"
     override val ayudaBateriaDesc = "Questa app utilizza uno sfondo nero puro per risparmiare energia (OLED). Inoltre, se metti in pausa e chiudi l'app, il processo si ferma completamente (0% consumi)."
     override val btnWeb = "Visita il sito web"
+    // NUEVOS IT
+    override val marcadorTitulo = "TABELLONE"
+    override val marcadorSwitchLabel = "Attiva Referto"
+    override val marcadorDesc = "Attivando questa opzione, puoi inserire i nomi delle squadre, contare i gol e registrare gli eventi minuto per minuto."
 }
 
 object DeStrings : AppStrings {
@@ -300,6 +320,7 @@ object DeStrings : AppStrings {
     override val menuColores = "Farben"
     override val menuIdioma = "Sprache"
     override val menuAyuda = "Hilfe"
+    override val menuMarcador = "Anzeigetafel"
     override val appTitulo = "FUSSBALL TIMER"
     override val btnPausar = "PAUSE"
     override val btn1Tiempo = "1. HALBZEIT"
@@ -337,7 +358,6 @@ object DeStrings : AppStrings {
     override val welcomeTitulo = "Willkommen!"
     override val welcomeDesc = "Damit der Timer auch bei ausgeschaltetem Bildschirm weiterläuft, benötigen wir die Benachrichtigungserlaubnis."
     override val welcomeBtn = "Weiter & Aktivieren"
-    // AYUDA DE
     override val ayudaTitulo = "HILFE"
     override val ayudaIntro = "Kurzanleitung:"
     override val ayudaPaso1 = "1. Drücken Sie '1. HALBZEIT', um bei 00:00 zu starten."
@@ -347,6 +367,10 @@ object DeStrings : AppStrings {
     override val ayudaBateriaTitulo = "Intelligentes Batteriemanagement"
     override val ayudaBateriaDesc = "Diese App verwendet einen rein schwarzen Hintergrund, um Energie zu sparen (OLED). Wenn Sie pausieren und die App schließen, stoppt der Prozess vollständig (0% Verbrauch)."
     override val btnWeb = "Website besuchen"
+    // NUEVOS DE
+    override val marcadorTitulo = "ANZEIGETAFEL"
+    override val marcadorSwitchLabel = "Spielbericht aktivieren"
+    override val marcadorDesc = "Aktivieren Sie diese Option, um Mannschaftsnamen einzugeben, Tore zu zählen und Ereignisse Minute für Minute aufzuzeichnen."
 }
 
 object PtStrings : AppStrings {
@@ -357,6 +381,7 @@ object PtStrings : AppStrings {
     override val menuColores = "Cores"
     override val menuIdioma = "Idioma"
     override val menuAyuda = "Ajuda"
+    override val menuMarcador = "Placar / Súmula"
     override val appTitulo = "CRONOFUTBOL"
     override val btnPausar = "PAUSA"
     override val btn1Tiempo = "1º TEMPO"
@@ -394,7 +419,6 @@ object PtStrings : AppStrings {
     override val welcomeTitulo = "Bem-vindo!"
     override val welcomeDesc = "Para manter o cronômetro funcionando com a tela desligada, precisamos de permissão para notificações."
     override val welcomeBtn = "Continuar e Habilitar"
-    // AYUDA PT
     override val ayudaTitulo = "AJUDA"
     override val ayudaIntro = "Guia rápido:"
     override val ayudaPaso1 = "1. Pressione '1º TEMPO' para começar do 00:00."
@@ -404,6 +428,10 @@ object PtStrings : AppStrings {
     override val ayudaBateriaTitulo = "Gestão Inteligente de Bateria"
     override val ayudaBateriaDesc = "Este app usa fundo preto puro para economizar energia (OLED). Além disso, se você pausar e fechar o app, o processo para completamente (consumo 0%)."
     override val btnWeb = "Visitar site oficial"
+    // NUEVOS PT
+    override val marcadorTitulo = "PLACAR"
+    override val marcadorSwitchLabel = "Ativar Súmula"
+    override val marcadorDesc = "Ative esta opção para inserir nomes de times, contar gols e registrar eventos minuto a minuto."
 }
 
 enum class LanguageCode { AUTO, ES, EN, FR, IT, DE, PT }

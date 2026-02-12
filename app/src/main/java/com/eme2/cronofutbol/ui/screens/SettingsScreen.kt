@@ -85,7 +85,7 @@ fun SettingsScreen(onBackClick: () -> Unit) {
     }
 }
 
-// --- PANTALLA DE AJUSTES DE TIEMPO Y MARCADOR ---
+// --- PANTALLA DE AJUSTES DE TIEMPO (Limpia) ---
 @Composable
 fun TimeSettingsScreen(onBackClick: () -> Unit) {
     Column(modifier = Modifier.fillMaxSize().background(SportBlack).padding(top = 80.dp, start = 24.dp, end = 24.dp)) {
@@ -97,28 +97,6 @@ fun TimeSettingsScreen(onBackClick: () -> Unit) {
         }
 
         Spacer(modifier = Modifier.height(40.dp))
-
-        // --- SECCIÓN: MODO MARCADOR ---
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .background(SportGray, RoundedCornerShape(12.dp))
-                .padding(16.dp),
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.SpaceBetween
-        ) {
-            Column(modifier = Modifier.weight(1f)) {
-                Text("Activar Marcador / Acta", color = PureWhite, fontWeight = FontWeight.Bold, fontSize = 16.sp)
-                Text("Habilita nombres de equipos y conteo de goles.", color = Color.Gray, fontSize = 12.sp)
-            }
-            Switch(
-                checked = MatchManager.isScoreboardEnabled,
-                onCheckedChange = { MatchManager.isScoreboardEnabled = it },
-                colors = SwitchDefaults.colors(checkedThumbColor = NeonGreen)
-            )
-        }
-
-        Spacer(modifier = Modifier.height(30.dp))
 
         // Configuración del 2º tiempo
         Text(LanguageManager.s.ajustesTiempoDesc1, fontSize = 18.sp, fontWeight = FontWeight.Bold, color = PureWhite); Spacer(modifier = Modifier.height(8.dp))
