@@ -30,17 +30,19 @@ fun ScoreboardSettingsScreen(onBackClick: () -> Unit) {
 
         Spacer(modifier = Modifier.height(40.dp))
 
-        // --- ICONO GRANDE ---
-        Icon(
-            imageVector = Icons.Default.Scoreboard,
-            contentDescription = null,
-            tint = NeonYellow,
-            modifier = Modifier.size(100.dp).align(Alignment.CenterHorizontally)
-        )
+        // Icono Grande
+        Box(modifier = Modifier.fillMaxWidth(), contentAlignment = Alignment.Center) {
+            Icon(
+                imageVector = Icons.Default.Scoreboard,
+                contentDescription = null,
+                tint = NeonYellow,
+                modifier = Modifier.size(100.dp)
+            )
+        }
 
         Spacer(modifier = Modifier.height(32.dp))
 
-        // --- INTERRUPTOR ACTIVACIÓN ---
+        // Interruptor
         Row(
             modifier = Modifier
                 .fillMaxWidth()
@@ -59,7 +61,7 @@ fun ScoreboardSettingsScreen(onBackClick: () -> Unit) {
 
         Spacer(modifier = Modifier.height(30.dp))
 
-        // --- EXPLICACIÓN ---
+        // Explicación
         Text(
             text = LanguageManager.s.marcadorDesc,
             color = Color.Gray,

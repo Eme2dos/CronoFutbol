@@ -42,14 +42,12 @@ fun HomeScreen(onMenuClick: () -> Unit) {
     var showSaveDialog by remember { mutableStateOf(false) }
     var nombrePartido by remember { mutableStateOf("") }
 
-    // Elegimos qué UI mostrar según la configuración
     if (MatchManager.isScoreboardEnabled) {
         ScoreboardView(onMenuClick, onSaveClick = { showSaveDialog = true })
     } else {
         SimpleTimerView(onMenuClick, onSaveClick = { showSaveDialog = true })
     }
 
-    // DIÁLOGO DE GUARDADO (Común)
     if (showSaveDialog) {
         AlertDialog(
             onDismissRequest = { showSaveDialog = false },
@@ -61,7 +59,6 @@ fun HomeScreen(onMenuClick: () -> Unit) {
     }
 }
 
-// --- VISTA 1: CRONÓMETRO SIMPLE ---
 @Composable
 fun SimpleTimerView(onMenuClick: () -> Unit, onSaveClick: () -> Unit) {
     val context = LocalContext.current
@@ -71,7 +68,6 @@ fun SimpleTimerView(onMenuClick: () -> Unit, onSaveClick: () -> Unit) {
     val textoTiempo = String.format("%02d:%02d", tiempoSegundos / 60, tiempoSegundos % 60)
 
     Column(modifier = Modifier.fillMaxSize().background(SportBlack).padding(top = 80.dp, bottom = 16.dp, start = 24.dp, end = 24.dp), horizontalAlignment = Alignment.CenterHorizontally) {
-        // HEADER
         Row(modifier = Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
             IconButton(onClick = onMenuClick) { Icon(Icons.Default.Menu, contentDescription = null, tint = PureWhite, modifier = Modifier.size(32.dp)) }
             Spacer(modifier = Modifier.width(16.dp))
@@ -85,7 +81,6 @@ fun SimpleTimerView(onMenuClick: () -> Unit, onSaveClick: () -> Unit) {
         }
         Spacer(modifier = Modifier.height(20.dp))
 
-        // INFO CARD
         if (HistoryManager.isEnabled && HistoryManager.tempDuracion1 != null) {
             Card(colors = CardDefaults.cardColors(containerColor = SportGray), shape = RoundedCornerShape(12.dp), modifier = Modifier.fillMaxWidth()) {
                 Row(modifier = Modifier.padding(16.dp).fillMaxWidth(), verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.SpaceBetween) {
@@ -105,7 +100,6 @@ fun SimpleTimerView(onMenuClick: () -> Unit, onSaveClick: () -> Unit) {
     }
 }
 
-// --- VISTA 2: MODO MARCADOR ---
 @Composable
 fun ScoreboardView(onMenuClick: () -> Unit, onSaveClick: () -> Unit) {
     val context = LocalContext.current
@@ -115,7 +109,6 @@ fun ScoreboardView(onMenuClick: () -> Unit, onSaveClick: () -> Unit) {
     val textoTiempo = String.format("%02d:%02d", tiempoSegundos / 60, tiempoSegundos % 60)
 
     Column(modifier = Modifier.fillMaxSize().background(SportBlack).padding(top = 60.dp, bottom = 16.dp, start = 16.dp, end = 16.dp)) {
-        // Header
         Row(modifier = Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
             IconButton(onClick = onMenuClick) { Icon(Icons.Default.Menu, contentDescription = null, tint = PureWhite) }
             Box(modifier = Modifier.weight(1f).padding(horizontal = 8.dp).background(SportGray.copy(alpha = 0.5f), RoundedCornerShape(8.dp)).padding(8.dp)) {
@@ -127,24 +120,17 @@ fun ScoreboardView(onMenuClick: () -> Unit, onSaveClick: () -> Unit) {
 
         Spacer(modifier = Modifier.height(16.dp))
 
-        // --- ZONA MARCADOR ---
         Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween, verticalAlignment = Alignment.CenterVertically) {
-            // EQUIPO LOCAL
             TeamColumn(name = MatchManager.equipoLocal, score = MatchManager.golesLocal, onNameChange = { MatchManager.equipoLocal = it }, onAdd = { MatchManager.agregarGol(true) }, onRemove = { MatchManager.quitarGol(true) }, color = ColorManager.btn1Color)
-
-            // CRONO CENTRAL
             Column(horizontalAlignment = Alignment.CenterHorizontally) {
                 Text(text = textoTiempo, style = TextStyle(fontSize = 40.sp, fontWeight = FontWeight.Bold, fontFamily = FontFamily.Monospace, color = ColorManager.chronoColor))
                 Text(if(estaCorriendo) "JUGANDO" else "PAUSA", color = if(estaCorriendo) NeonGreen else NeonRed, fontSize = 12.sp, fontWeight = FontWeight.Bold)
             }
-
-            // EQUIPO VISITANTE
             TeamColumn(name = MatchManager.equipoVisitante, score = MatchManager.golesVisitante, onNameChange = { MatchManager.equipoVisitante = it }, onAdd = { MatchManager.agregarGol(false) }, onRemove = { MatchManager.quitarGol(false) }, color = ColorManager.btn2Color)
         }
 
         Spacer(modifier = Modifier.height(16.dp))
 
-        // LISTA DE EVENTOS
         Text("Eventos:", color = Color.Gray, fontSize = 12.sp, modifier = Modifier.padding(start = 8.dp))
         Card(modifier = Modifier.fillMaxWidth().height(120.dp).padding(vertical = 4.dp), colors = CardDefaults.cardColors(containerColor = SportGray)) {
             if (MatchManager.eventos.isEmpty()) {
@@ -192,8 +178,8 @@ fun TeamColumn(name: String, score: Int, onNameChange: (String) -> Unit, onAdd: 
 
 @Composable
 fun BotonesControl(context: Context, estaCorriendo: Boolean, etapaActual: Int, tiempoSegundos: Long) {
-    // --- SOLUCIÓN ERROR ALIGN: Envolvemos en Column para estructurar verticalmente ---
-    Column(horizontalAlignment = Alignment.CenterHorizontally, modifier = Modifier.fillMaxWidth()) {
+    // CORRECCIÓN: Agregamos una Column contenedora para que la alineación funcione
+    Column(modifier = Modifier.fillMaxWidth(), horizontalAlignment = Alignment.CenterHorizontally) {
         Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(16.dp)) {
             val enabled1 = etapaActual != 2
             Button(
@@ -246,7 +232,7 @@ fun BotonesControl(context: Context, estaCorriendo: Boolean, etapaActual: Int, t
             },
             shape = RoundedCornerShape(12.dp),
             colors = ButtonDefaults.buttonColors(containerColor = ColorManager.btnResetColor),
-            modifier = Modifier.width(200.dp).height(55.dp)
+            modifier = Modifier.width(200.dp).height(55.dp) // Ya no necesitamos .align() aquí porque la Column padre centra
         ) {
             Icon(Icons.Default.Refresh, contentDescription = null, tint = Color.White)
             Spacer(modifier = Modifier.width(8.dp))
