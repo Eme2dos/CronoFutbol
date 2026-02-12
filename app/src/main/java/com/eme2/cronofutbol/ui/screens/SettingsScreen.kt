@@ -30,6 +30,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.eme2.cronofutbol.data.*
+import androidx.compose.material.icons.filled.Scoreboard // Asegúrate de tenerlo o usa uno generico
 
 @Composable
 fun SettingsScreen(onBackClick: () -> Unit) { // SonidosScreen
@@ -59,5 +60,51 @@ fun TimeSettingsScreen(onBackClick: () -> Unit) {
         Text(LanguageManager.s.ajustesTiempoDesc2, fontSize = 14.sp, color = Color.Gray, lineHeight = 20.sp); Spacer(modifier = Modifier.height(40.dp))
         Text(LanguageManager.s.ajustesTiempoLabel, color = NeonBlue, fontSize = 16.sp, fontWeight = FontWeight.Bold); Spacer(modifier = Modifier.height(16.dp))
         Row(verticalAlignment = Alignment.CenterVertically, modifier = Modifier.border(2.dp, PureWhite, RoundedCornerShape(12.dp)).padding(24.dp)) { BasicTextField(value = TimeManager.secondHalfStartMinute, onValueChange = { if (it.length <= 3 && it.all { char -> char.isDigit() }) TimeManager.secondHalfStartMinute = it }, textStyle = TextStyle(color = PureWhite, fontSize = 48.sp, fontWeight = FontWeight.Bold, fontFamily = FontFamily.Monospace, textAlign = TextAlign.Center), keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number), singleLine = true, modifier = Modifier.width(100.dp)); Text("min", fontSize = 24.sp, color = Color.Gray, fontWeight = FontWeight.Bold) }
+    }
+}
+
+@Composable
+fun TimeSettingsScreen(onBackClick: () -> Unit) {
+    Column(modifier = Modifier.fillMaxSize().background(SportBlack).padding(top = 80.dp, start = 24.dp, end = 24.dp)) {
+        // Header
+        Row(verticalAlignment = Alignment.CenterVertically) {
+            IconButton(onClick = onBackClick) { Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = null, tint = PureWhite, modifier = Modifier.size(32.dp)) }
+            Spacer(modifier = Modifier.width(16.dp))
+            Text(LanguageManager.s.ajustesTiempoTitulo, style = TextStyle(fontSize = 22.sp, fontWeight = FontWeight.Bold, fontFamily = FontFamily.Monospace, color = PureWhite))
+        }
+
+        Spacer(modifier = Modifier.height(40.dp))
+
+        // --- NUEVA SECCIÓN: MODO MARCADOR ---
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .background(SportGray, RoundedCornerShape(12.dp))
+                .padding(16.dp),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.SpaceBetween
+        ) {
+            Column(modifier = Modifier.weight(1f)) {
+                Text("Activar Marcador / Acta", color = PureWhite, fontWeight = FontWeight.Bold, fontSize = 16.sp)
+                Text("Habilita nombres de equipos y conteo de goles.", color = Color.Gray, fontSize = 12.sp)
+            }
+            Switch(
+                checked = MatchManager.isScoreboardEnabled,
+                onCheckedChange = { MatchManager.isScoreboardEnabled = it },
+                colors = SwitchDefaults.colors(checkedThumbColor = NeonGreen)
+            )
+        }
+
+        Spacer(modifier = Modifier.height(30.dp))
+        // -------------------------------------
+
+        // Configuración original del 2º tiempo
+        Text(LanguageManager.s.ajustesTiempoDesc1, fontSize = 18.sp, fontWeight = FontWeight.Bold, color = PureWhite); Spacer(modifier = Modifier.height(8.dp))
+        Text(LanguageManager.s.ajustesTiempoDesc2, fontSize = 14.sp, color = Color.Gray, lineHeight = 20.sp); Spacer(modifier = Modifier.height(40.dp))
+        Text(LanguageManager.s.ajustesTiempoLabel, color = NeonBlue, fontSize = 16.sp, fontWeight = FontWeight.Bold); Spacer(modifier = Modifier.height(16.dp))
+        Row(verticalAlignment = Alignment.CenterVertically, modifier = Modifier.border(2.dp, PureWhite, RoundedCornerShape(12.dp)).padding(24.dp)) {
+            BasicTextField(value = TimeManager.secondHalfStartMinute, onValueChange = { if (it.length <= 3 && it.all { char -> char.isDigit() }) TimeManager.secondHalfStartMinute = it }, textStyle = TextStyle(color = PureWhite, fontSize = 48.sp, fontWeight = FontWeight.Bold, fontFamily = FontFamily.Monospace, textAlign = TextAlign.Center), keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number), singleLine = true, modifier = Modifier.width(100.dp))
+            Text("min", fontSize = 24.sp, color = Color.Gray, fontWeight = FontWeight.Bold)
+        }
     }
 }

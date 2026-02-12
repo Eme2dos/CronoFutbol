@@ -4,7 +4,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
-import com.eme2.cronofutbol.data.model.SesionPartido // Importante importar el modelo
+import com.eme2.cronofutbol.data.model.SesionPartido
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
@@ -22,9 +22,7 @@ object HistoryManager {
         }
     }
 
-    fun registrarT1(segundos: Long) {
-        tempDuracion1 = formatear(segundos)
-    }
+    fun registrarT1(segundos: Long) { tempDuracion1 = formatear(segundos) }
 
     fun registrarT2(segundosTotal: Long) {
         val inicio2 = (TimeManager.secondHalfStartMinute.toLongOrNull() ?: 45L) * 60
@@ -34,14 +32,26 @@ object HistoryManager {
 
     fun guardarSesion(nombre: String) {
         if (tempDuracion1 != null) {
+            // LÓGICA NUEVA: ¿Estamos en modo marcador?
+            val esMarcador = MatchManager.isScoreboardEnabled
+
             val nuevaSesion = SesionPartido(
                 nombre = nombre,
+                estadio = if (esMarcador) MatchManager.estadio else "",
                 fecha = if (fechaSesion.isNotEmpty()) fechaSesion else SimpleDateFormat("dd/MM/yyyy", Locale.getDefault()).format(Date()),
                 duracion1 = tempDuracion1 ?: "00:00",
-                duracion2 = tempDuracion2 ?: "00:00"
+                duracion2 = tempDuracion2 ?: "00:00",
+                // Guardamos datos del marcador si aplica
+                marcadorLocal = if (esMarcador) MatchManager.golesLocal else null,
+                marcadorVisitante = if (esMarcador) MatchManager.golesVisitante else null,
+                nombreLocal = if (esMarcador) MatchManager.equipoLocal else "Local",
+                nombreVisitante = if (esMarcador) MatchManager.equipoVisitante else "Visitante",
+                eventos = if (esMarcador) ArrayList(MatchManager.eventos) else emptyList()
             )
+
             sesiones.add(0, nuevaSesion)
             limpiarTemp()
+            if (esMarcador) MatchManager.resetMatch() // Reseteamos el marcador tras guardar
         }
     }
 
@@ -52,8 +62,7 @@ object HistoryManager {
     }
 
     private fun formatear(seg: Long): String {
-        val m = seg / 60
-        val s = seg % 60
+        val m = seg / 60; val s = seg % 60
         return String.format("%02d:%02d", m, s)
     }
 }
