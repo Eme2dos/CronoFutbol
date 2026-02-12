@@ -209,7 +209,6 @@ object FrStrings : AppStrings {
     override val guardarDialogLabel = "Nom du match"
     override val btnGuardar = "Sauvegarder"
     override val btnCancelar = "Annuler"
-    override val développéPar = "Développé par MLaOrden"
     override val desarrolladoPor = "Développé par MLaOrden"
     override val historialTitulo = "HISTORIQUE"
     override val historialSwitch = "Enregistrer sessions"
