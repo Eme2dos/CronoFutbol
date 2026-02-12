@@ -33,7 +33,6 @@ class CronoService : Service() {
     }
 
     private var serviceJob: Job? = null
-    // Usamos Dispatchers.Main para poder actualizar variables de estado de Compose de forma segura
     private val serviceScope = CoroutineScope(Dispatchers.Main)
 
     override fun onBind(intent: Intent?): IBinder? = null
@@ -48,16 +47,17 @@ class CronoService : Service() {
             "PAUSAR" -> pausarCrono()
             "REINICIAR" -> reiniciarCrono()
         }
-        // START_NOT_STICKY: Si el sistema mata el servicio por falta de memoria,
-        // no lo reinicia automáticamente. Esto ahorra batería si Android decide que necesita recursos.
-        // Si prefieres máxima seguridad de que no se cierre, usa START_STICKY.
         return START_NOT_STICKY
     }
 
     private fun iniciarCrono(minutoInicio: Long, etapa: Int) {
         if (estaCorriendo) return
 
-        if (tiempoActualSegundos == 0L) {
+        // --- CORRECCIÓN DEL ERROR ---
+        // Antes solo actualizábamos si tiempoActualSegundos == 0L.
+        // Ahora actualizamos si es 0 (inicio partido) O SI CAMBIAMOS DE ETAPA (del 1º al 2º).
+        // Si estamos en la etapa 2 y pausamos/reanudamos, etapa == etapaActual, así que NO reinicia.
+        if (tiempoActualSegundos == 0L || etapa != etapaActual) {
             tiempoActualSegundos = minutoInicio * 60
         }
 
@@ -65,11 +65,10 @@ class CronoService : Service() {
         estaCorriendo = true
         startForeground(NOTIFICATION_ID, crearNotificacion())
 
-        // OPTIMIZACIÓN: Cancelamos cualquier trabajo previo para no tener duplicados
         serviceJob?.cancel()
         serviceJob = serviceScope.launch {
             while (isActive && estaCorriendo) {
-                delay(1000L) // Dormimos 1 segundo exacto. Consumo de CPU mínimo.
+                delay(1000L)
                 tiempoActualSegundos++
                 actualizarNotificacion()
             }
@@ -78,7 +77,6 @@ class CronoService : Service() {
 
     private fun pausarCrono() {
         estaCorriendo = false
-        // OPTIMIZACIÓN CRÍTICA: Al cancelar el Job, la corrutina deja de consumir CPU inmediatamente.
         serviceJob?.cancel()
         actualizarNotificacion()
     }
@@ -89,17 +87,14 @@ class CronoService : Service() {
         tiempoActualSegundos = 0L
         etapaActual = 1
         stopForeground(STOP_FOREGROUND_REMOVE)
-        stopSelf() // Mata el servicio completamente
+        stopSelf()
     }
 
-    // OPTIMIZACIÓN: Si el usuario cierra la app desde la multitarea
     override fun onTaskRemoved(rootIntent: Intent?) {
         super.onTaskRemoved(rootIntent)
-        // Si el crono NO está corriendo (está pausado o a cero), matamos el servicio para no gastar batería.
         if (!estaCorriendo) {
             stopSelf()
         }
-        // Si está corriendo, NO lo matamos, porque el usuario espera que siga contando en 2º plano.
     }
 
     private fun crearNotificacion(): Notification {
@@ -118,10 +113,12 @@ class CronoService : Service() {
         val tiempoTexto = String.format("%02d:%02d", minutos, segundos)
         val estado = if (estaCorriendo) "En juego - ${etapaActual}T" else "Pausado"
 
+        // NOTA: Si ya tienes tu icono personalizado, cambia R.drawable.ic_launcher_foreground
+        // por R.drawable.logo_app
         return NotificationCompat.Builder(this, CHANNEL_ID)
             .setContentTitle("CronoFutbol: $tiempoTexto")
             .setContentText(estado)
-            .setSmallIcon(R.drawable.ic_launcher_foreground) // Si tienes icono propio, pon R.drawable.logo_app
+            .setSmallIcon(R.drawable.ic_launcher_foreground)
             .setPriority(NotificationCompat.PRIORITY_LOW)
             .setOnlyAlertOnce(true)
             .setContentIntent(pendingIntent)
@@ -148,6 +145,6 @@ class CronoService : Service() {
 
     override fun onDestroy() {
         super.onDestroy()
-        serviceJob?.cancel() // Limpieza final de seguridad
+        serviceJob?.cancel()
     }
 }
