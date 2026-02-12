@@ -113,12 +113,18 @@ class CronoService : Service() {
         val tiempoTexto = String.format("%02d:%02d", minutos, segundos)
         val estado = if (estaCorriendo) "En juego - ${etapaActual}T" else "Pausado"
 
-        // NOTA: Si ya tienes tu icono personalizado, cambia R.drawable.ic_launcher_foreground
-        // por R.drawable.logo_app
+        // Definimos el color verde neón para el acento de la notificación
+        val colorNeon = 0xFF00E676.toInt()
+
         return NotificationCompat.Builder(this, CHANNEL_ID)
             .setContentTitle("CronoFutbol: $tiempoTexto")
             .setContentText(estado)
-            .setSmallIcon(R.drawable.ic_launcher_foreground)
+            // CAMBIO 1: Usamos el nuevo icono de silueta transparente
+            .setSmallIcon(R.drawable.ic_notification_crono)
+            // CAMBIO 2: Le damos color al icono y al texto del sistema
+            .setColor(colorNeon)
+            // CAMBIO 3: Esto asegura que se vea bien en todas las versiones
+            .setColorized(true)
             .setPriority(NotificationCompat.PRIORITY_LOW)
             .setOnlyAlertOnce(true)
             .setContentIntent(pendingIntent)
