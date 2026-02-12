@@ -1,5 +1,6 @@
 package com.eme2.cronofutbol.ui.screens
 
+import android.content.Context
 import android.content.Intent
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
@@ -38,7 +39,6 @@ import com.eme2.cronofutbol.utils.startCronoService
 
 @Composable
 fun HomeScreen(onMenuClick: () -> Unit) {
-    val context = LocalContext.current
     var showSaveDialog by remember { mutableStateOf(false) }
     var nombrePartido by remember { mutableStateOf("") }
 
@@ -49,7 +49,7 @@ fun HomeScreen(onMenuClick: () -> Unit) {
         SimpleTimerView(onMenuClick, onSaveClick = { showSaveDialog = true })
     }
 
-    // DIÁLOGO DE GUARDADO (Común para ambos modos)
+    // DIÁLOGO DE GUARDADO (Común)
     if (showSaveDialog) {
         AlertDialog(
             onDismissRequest = { showSaveDialog = false },
@@ -61,7 +61,7 @@ fun HomeScreen(onMenuClick: () -> Unit) {
     }
 }
 
-// --- VISTA 1: CRONÓMETRO SIMPLE (La que tenías antes) ---
+// --- VISTA 1: CRONÓMETRO SIMPLE ---
 @Composable
 fun SimpleTimerView(onMenuClick: () -> Unit, onSaveClick: () -> Unit) {
     val context = LocalContext.current
@@ -71,7 +71,7 @@ fun SimpleTimerView(onMenuClick: () -> Unit, onSaveClick: () -> Unit) {
     val textoTiempo = String.format("%02d:%02d", tiempoSegundos / 60, tiempoSegundos % 60)
 
     Column(modifier = Modifier.fillMaxSize().background(SportBlack).padding(top = 80.dp, bottom = 16.dp, start = 24.dp, end = 24.dp), horizontalAlignment = Alignment.CenterHorizontally) {
-        // HEADER SIMPLE
+        // HEADER
         Row(modifier = Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
             IconButton(onClick = onMenuClick) { Icon(Icons.Default.Menu, contentDescription = null, tint = PureWhite, modifier = Modifier.size(32.dp)) }
             Spacer(modifier = Modifier.width(16.dp))
@@ -105,7 +105,7 @@ fun SimpleTimerView(onMenuClick: () -> Unit, onSaveClick: () -> Unit) {
     }
 }
 
-// --- VISTA 2: MODO MARCADOR / FICHA DE PARTIDO (NUEVA) ---
+// --- VISTA 2: MODO MARCADOR ---
 @Composable
 fun ScoreboardView(onMenuClick: () -> Unit, onSaveClick: () -> Unit) {
     val context = LocalContext.current
@@ -115,10 +115,9 @@ fun ScoreboardView(onMenuClick: () -> Unit, onSaveClick: () -> Unit) {
     val textoTiempo = String.format("%02d:%02d", tiempoSegundos / 60, tiempoSegundos % 60)
 
     Column(modifier = Modifier.fillMaxSize().background(SportBlack).padding(top = 60.dp, bottom = 16.dp, start = 16.dp, end = 16.dp)) {
-        // Header con Menú y Estadio
+        // Header
         Row(modifier = Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
             IconButton(onClick = onMenuClick) { Icon(Icons.Default.Menu, contentDescription = null, tint = PureWhite) }
-            // Campo de Estadio
             Box(modifier = Modifier.weight(1f).padding(horizontal = 8.dp).background(SportGray.copy(alpha = 0.5f), RoundedCornerShape(8.dp)).padding(8.dp)) {
                 if (MatchManager.estadio.isEmpty()) Text("Estadio / Sede...", color = Color.Gray, fontSize = 12.sp)
                 BasicTextField(value = MatchManager.estadio, onValueChange = { MatchManager.estadio = it }, textStyle = TextStyle(color = PureWhite, fontSize = 14.sp), singleLine = true)
@@ -131,40 +130,23 @@ fun ScoreboardView(onMenuClick: () -> Unit, onSaveClick: () -> Unit) {
         // --- ZONA MARCADOR ---
         Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween, verticalAlignment = Alignment.CenterVertically) {
             // EQUIPO LOCAL
-            TeamColumn(
-                name = MatchManager.equipoLocal,
-                score = MatchManager.golesLocal,
-                onNameChange = { MatchManager.equipoLocal = it },
-                onAdd = { MatchManager.agregarGol(true) },
-                onRemove = { MatchManager.quitarGol(true) },
-                color = ColorManager.btn1Color
-            )
+            TeamColumn(name = MatchManager.equipoLocal, score = MatchManager.golesLocal, onNameChange = { MatchManager.equipoLocal = it }, onAdd = { MatchManager.agregarGol(true) }, onRemove = { MatchManager.quitarGol(true) }, color = ColorManager.btn1Color)
 
-            // CRONO CENTRAL (Más pequeño que en modo simple)
+            // CRONO CENTRAL
             Column(horizontalAlignment = Alignment.CenterHorizontally) {
                 Text(text = textoTiempo, style = TextStyle(fontSize = 40.sp, fontWeight = FontWeight.Bold, fontFamily = FontFamily.Monospace, color = ColorManager.chronoColor))
                 Text(if(estaCorriendo) "JUGANDO" else "PAUSA", color = if(estaCorriendo) NeonGreen else NeonRed, fontSize = 12.sp, fontWeight = FontWeight.Bold)
             }
 
             // EQUIPO VISITANTE
-            TeamColumn(
-                name = MatchManager.equipoVisitante,
-                score = MatchManager.golesVisitante,
-                onNameChange = { MatchManager.equipoVisitante = it },
-                onAdd = { MatchManager.agregarGol(false) },
-                onRemove = { MatchManager.quitarGol(false) },
-                color = ColorManager.btn2Color
-            )
+            TeamColumn(name = MatchManager.equipoVisitante, score = MatchManager.golesVisitante, onNameChange = { MatchManager.equipoVisitante = it }, onAdd = { MatchManager.agregarGol(false) }, onRemove = { MatchManager.quitarGol(false) }, color = ColorManager.btn2Color)
         }
 
         Spacer(modifier = Modifier.height(16.dp))
 
-        // LISTA DE EVENTOS (GOLES)
+        // LISTA DE EVENTOS
         Text("Eventos:", color = Color.Gray, fontSize = 12.sp, modifier = Modifier.padding(start = 8.dp))
-        Card(
-            modifier = Modifier.fillMaxWidth().height(120.dp).padding(vertical = 4.dp),
-            colors = CardDefaults.cardColors(containerColor = SportGray)
-        ) {
+        Card(modifier = Modifier.fillMaxWidth().height(120.dp).padding(vertical = 4.dp), colors = CardDefaults.cardColors(containerColor = SportGray)) {
             if (MatchManager.eventos.isEmpty()) {
                 Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) { Text("Sin eventos", color = Color.Gray) }
             } else {
@@ -188,7 +170,6 @@ fun ScoreboardView(onMenuClick: () -> Unit, onSaveClick: () -> Unit) {
     }
 }
 
-// COMPONENTES AUXILIARES PARA LIMPIEZA
 @Composable
 fun TeamColumn(name: String, score: Int, onNameChange: (String) -> Unit, onAdd: () -> Unit, onRemove: () -> Unit, color: Color) {
     Column(horizontalAlignment = Alignment.CenterHorizontally, modifier = Modifier.width(110.dp)) {
@@ -210,63 +191,67 @@ fun TeamColumn(name: String, score: Int, onNameChange: (String) -> Unit, onAdd: 
 }
 
 @Composable
-fun BotonesControl(context: android.content.Context, estaCorriendo: Boolean, etapaActual: Int, tiempoSegundos: Long) {
-    Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(16.dp)) {
-        val enabled1 = etapaActual != 2
-        Button(
-            onClick = {
-                SoundManager.feedback(context)
-                if (!estaCorriendo) HistoryManager.iniciarSesion() else if (estaCorriendo && etapaActual == 1) HistoryManager.registrarT1(tiempoSegundos)
-                val intent = Intent(context, CronoService::class.java)
-                if (estaCorriendo && etapaActual == 1) intent.action = "PAUSAR" else { intent.action = "INICIAR"; intent.putExtra("MINUTO_INICIO", 0L); intent.putExtra("ETAPA", 1) }
-                startCronoService(context, intent)
-            },
-            enabled = enabled1, shape = RoundedCornerShape(12.dp), contentPadding = PaddingValues(horizontal = 4.dp, vertical = 8.dp),
-            colors = ButtonDefaults.buttonColors(containerColor = ColorManager.btn1Color, disabledContainerColor = ColorManager.btn1Color.copy(alpha = 0.3f)),
-            modifier = Modifier.weight(1f).height(80.dp)
-        ) {
-            Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                Text(text = if (estaCorriendo && etapaActual == 1) LanguageManager.s.btnPausar else LanguageManager.s.btn1Tiempo, fontSize = 14.sp, fontWeight = FontWeight.Black, color = if (enabled1) Color.White else Color.White.copy(alpha = 0.5f), maxLines = 1, softWrap = false)
+fun BotonesControl(context: Context, estaCorriendo: Boolean, etapaActual: Int, tiempoSegundos: Long) {
+    // --- SOLUCIÓN ERROR ALIGN: Envolvemos en Column para estructurar verticalmente ---
+    Column(horizontalAlignment = Alignment.CenterHorizontally, modifier = Modifier.fillMaxWidth()) {
+        Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(16.dp)) {
+            val enabled1 = etapaActual != 2
+            Button(
+                onClick = {
+                    SoundManager.feedback(context)
+                    if (!estaCorriendo) HistoryManager.iniciarSesion() else if (estaCorriendo && etapaActual == 1) HistoryManager.registrarT1(tiempoSegundos)
+                    val intent = Intent(context, CronoService::class.java)
+                    if (estaCorriendo && etapaActual == 1) intent.action = "PAUSAR" else { intent.action = "INICIAR"; intent.putExtra("MINUTO_INICIO", 0L); intent.putExtra("ETAPA", 1) }
+                    startCronoService(context, intent)
+                },
+                enabled = enabled1, shape = RoundedCornerShape(12.dp), contentPadding = PaddingValues(horizontal = 4.dp, vertical = 8.dp),
+                colors = ButtonDefaults.buttonColors(containerColor = ColorManager.btn1Color, disabledContainerColor = ColorManager.btn1Color.copy(alpha = 0.3f)),
+                modifier = Modifier.weight(1f).height(80.dp)
+            ) {
+                Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                    Text(text = if (estaCorriendo && etapaActual == 1) LanguageManager.s.btnPausar else LanguageManager.s.btn1Tiempo, fontSize = 14.sp, fontWeight = FontWeight.Black, color = if (enabled1) Color.White else Color.White.copy(alpha = 0.5f), maxLines = 1, softWrap = false)
+                }
+            }
+
+            val enabled2 = !(estaCorriendo && etapaActual == 1)
+            Button(
+                onClick = {
+                    SoundManager.feedback(context)
+                    if (estaCorriendo && etapaActual == 1) HistoryManager.registrarT1(tiempoSegundos)
+                    if (estaCorriendo && etapaActual == 2) HistoryManager.registrarT2(tiempoSegundos)
+                    val intent = Intent(context, CronoService::class.java)
+                    if (estaCorriendo && etapaActual == 2) intent.action = "PAUSAR" else { intent.action = "INICIAR"; val minInicio = TimeManager.secondHalfStartMinute.toLongOrNull() ?: 45L; intent.putExtra("MINUTO_INICIO", minInicio); intent.putExtra("ETAPA", 2) }
+                    startCronoService(context, intent)
+                },
+                enabled = enabled2, shape = RoundedCornerShape(12.dp), contentPadding = PaddingValues(horizontal = 4.dp, vertical = 8.dp),
+                colors = ButtonDefaults.buttonColors(containerColor = ColorManager.btn2Color, disabledContainerColor = ColorManager.btn2Color.copy(alpha = 0.3f)),
+                modifier = Modifier.weight(1f).height(80.dp)
+            ) {
+                Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                    Text(text = if (estaCorriendo && etapaActual == 2) LanguageManager.s.btnPausar else LanguageManager.s.btn2Tiempo, fontSize = 14.sp, fontWeight = FontWeight.Black, color = if (enabled2) Color.White else Color.White.copy(alpha = 0.5f), maxLines = 1, softWrap = false)
+                }
             }
         }
 
-        val enabled2 = !(estaCorriendo && etapaActual == 1)
+        Spacer(modifier = Modifier.height(16.dp))
+
         Button(
             onClick = {
                 SoundManager.feedback(context)
-                if (estaCorriendo && etapaActual == 1) HistoryManager.registrarT1(tiempoSegundos)
-                if (estaCorriendo && etapaActual == 2) HistoryManager.registrarT2(tiempoSegundos)
                 val intent = Intent(context, CronoService::class.java)
-                if (estaCorriendo && etapaActual == 2) intent.action = "PAUSAR" else { intent.action = "INICIAR"; val minInicio = TimeManager.secondHalfStartMinute.toLongOrNull() ?: 45L; intent.putExtra("MINUTO_INICIO", minInicio); intent.putExtra("ETAPA", 2) }
-                startCronoService(context, intent)
+                intent.action = "REINICIAR"
+                context.startService(intent)
+                HistoryManager.limpiarTemp()
+                MatchManager.resetMatch()
             },
-            enabled = enabled2, shape = RoundedCornerShape(12.dp), contentPadding = PaddingValues(horizontal = 4.dp, vertical = 8.dp),
-            colors = ButtonDefaults.buttonColors(containerColor = ColorManager.btn2Color, disabledContainerColor = ColorManager.btn2Color.copy(alpha = 0.3f)),
-            modifier = Modifier.weight(1f).height(80.dp)
+            shape = RoundedCornerShape(12.dp),
+            colors = ButtonDefaults.buttonColors(containerColor = ColorManager.btnResetColor),
+            modifier = Modifier.width(200.dp).height(55.dp)
         ) {
-            Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                Text(text = if (estaCorriendo && etapaActual == 2) LanguageManager.s.btnPausar else LanguageManager.s.btn2Tiempo, fontSize = 14.sp, fontWeight = FontWeight.Black, color = if (enabled2) Color.White else Color.White.copy(alpha = 0.5f), maxLines = 1, softWrap = false)
-            }
+            Icon(Icons.Default.Refresh, contentDescription = null, tint = Color.White)
+            Spacer(modifier = Modifier.width(8.dp))
+            Text(LanguageManager.s.btnReiniciar, fontSize = 18.sp, fontWeight = FontWeight.Bold, color = Color.White)
         }
-    }
-    Spacer(modifier = Modifier.height(16.dp))
-    Button(
-        onClick = {
-            SoundManager.feedback(context)
-            val intent = Intent(context, CronoService::class.java)
-            intent.action = "REINICIAR"
-            context.startService(intent)
-            HistoryManager.limpiarTemp()
-            MatchManager.resetMatch() // Resetear también el marcador
-        },
-        shape = RoundedCornerShape(12.dp),
-        colors = ButtonDefaults.buttonColors(containerColor = ColorManager.btnResetColor),
-        modifier = Modifier.width(200.dp).height(55.dp)
-            .align(Alignment.CenterHorizontally)
-    ) {
-        Icon(Icons.Default.Refresh, contentDescription = null, tint = Color.White)
-        Spacer(modifier = Modifier.width(8.dp))
-        Text(LanguageManager.s.btnReiniciar, fontSize = 18.sp, fontWeight = FontWeight.Bold, color = Color.White)
     }
 }
 
