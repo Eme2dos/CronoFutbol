@@ -21,3 +21,4 @@ dependencyResolutionManagement {
 
 rootProject.name = "CronoFutbol"
 include(":app")
+include(":wear")
