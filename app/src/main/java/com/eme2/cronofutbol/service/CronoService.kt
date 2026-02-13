@@ -53,10 +53,7 @@ class CronoService : Service() {
     private fun iniciarCrono(minutoInicio: Long, etapa: Int) {
         if (estaCorriendo) return
 
-        // --- CORRECCIÓN DEL ERROR ---
-        // Antes solo actualizábamos si tiempoActualSegundos == 0L.
-        // Ahora actualizamos si es 0 (inicio partido) O SI CAMBIAMOS DE ETAPA (del 1º al 2º).
-        // Si estamos en la etapa 2 y pausamos/reanudamos, etapa == etapaActual, así que NO reinicia.
+        // --- CORRECCIÓN: Forzar salto de tiempo si cambiamos al 2º Tiempo ---
         if (tiempoActualSegundos == 0L || etapa != etapaActual) {
             tiempoActualSegundos = minutoInicio * 60
         }
@@ -113,17 +110,11 @@ class CronoService : Service() {
         val tiempoTexto = String.format("%02d:%02d", minutos, segundos)
         val estado = if (estaCorriendo) "En juego - ${etapaActual}T" else "Pausado"
 
-        // Definimos el color verde neón para el acento de la notificación
-        val colorNeon = 0xFF00E676.toInt()
-
         return NotificationCompat.Builder(this, CHANNEL_ID)
             .setContentTitle("CronoFutbol: $tiempoTexto")
             .setContentText(estado)
-            // CAMBIO 1: Usamos el nuevo icono de silueta transparente
-            .setSmallIcon(R.drawable.ic_notification_crono)
-            // CAMBIO 2: Le damos color al icono y al texto del sistema
-            .setColor(colorNeon)
-            // CAMBIO 3: Esto asegura que se vea bien en todas las versiones
+            .setSmallIcon(R.drawable.ic_notification_crono) // Tu icono transparente
+            .setColor(0xFF00E676.toInt()) // Tu color neón
             .setColorized(true)
             .setPriority(NotificationCompat.PRIORITY_LOW)
             .setOnlyAlertOnce(true)
