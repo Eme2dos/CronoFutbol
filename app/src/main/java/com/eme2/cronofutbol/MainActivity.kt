@@ -13,6 +13,7 @@ import androidx.compose.material.icons.filled.History
 import androidx.compose.material.icons.filled.Language
 import androidx.compose.material.icons.filled.MusicNote
 import androidx.compose.material.icons.filled.Palette
+import androidx.compose.material.icons.filled.Scoreboard
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
@@ -82,12 +83,18 @@ fun CronoFutbolApp() {
                 }
 
                 Column(modifier = Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(12.dp)) {
+                    // SECCIÓN PRINCIPAL
                     ModernDrawerItem(LanguageManager.s.menuHistorial, Icons.Default.History) { navController.navigate("history"); scope.launch { drawerState.close() } }
+                    // NUEVO ITEM: MARCADOR / ACTA
+                    ModernDrawerItem(LanguageManager.s.menuMarcador, Icons.Default.Scoreboard) { navController.navigate("scoreboard_settings"); scope.launch { drawerState.close() } }
+
+                    // SECCIÓN AJUSTES
                     ModernDrawerItem(LanguageManager.s.menuSonidos, Icons.Default.MusicNote) { navController.navigate("settings"); scope.launch { drawerState.close() } }
                     ModernDrawerItem(LanguageManager.s.menuTiempo, Icons.Default.AccessTime) { navController.navigate("time_settings"); scope.launch { drawerState.close() } }
                     ModernDrawerItem(LanguageManager.s.menuColores, Icons.Default.Palette) { navController.navigate("colors"); scope.launch { drawerState.close() } }
                     ModernDrawerItem(LanguageManager.s.menuIdioma, Icons.Default.Language) { navController.navigate("language"); scope.launch { drawerState.close() } }
-                    // NUEVO ITEM: AYUDA
+
+                    // SECCIÓN AYUDA
                     ModernDrawerItem(LanguageManager.s.menuAyuda, Icons.Default.Help) { navController.navigate("help"); scope.launch { drawerState.close() } }
                 }
             }
@@ -100,8 +107,9 @@ fun CronoFutbolApp() {
             composable("time_settings") { TimeSettingsScreen(onBackClick = { navController.popBackStack() }) }
             composable("history") { HistoryScreen(onBackClick = { navController.popBackStack() }) }
             composable("language") { LanguageScreen(onBackClick = { navController.popBackStack() }) }
-            // NUEVA PANTALLA
             composable("help") { HelpScreen(onBackClick = { navController.popBackStack() }) }
+            // NUEVA RUTA
+            composable("scoreboard_settings") { ScoreboardSettingsScreen(onBackClick = { navController.popBackStack() }) }
         }
     }
 }

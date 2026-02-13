@@ -1,34 +1,37 @@
-name: Crear APK Android
+name: Android CI
 
 on:
   push:
-    branches: [ "master", "main" ] # Se ejecutará si subes a master o main
+    branches: [ "*" ] # El asterisco significa "ejecutarse en cualquier rama"
   pull_request:
-    branches: [ "master", "main" ]
+    branches: [ "*" ]
 
 jobs:
   build:
+    name: Build Debug APK
     runs-on: ubuntu-latest
 
     steps:
-      - name: Descargar código del repositorio
+      - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Configurar Java 17
+      - name: Set up JDK 17
         uses: actions/setup-java@v4
         with:
           java-version: '17'
           distribution: 'temurin'
           cache: gradle
 
-      - name: Dar permisos de ejecución a Gradle
+      - name: Grant execute permission for gradlew
         run: chmod +x gradlew
 
-      - name: Compilar APK (Debug)
-        run: ./gradlew assembleDebug
+      # Este paso compila la app en modo Debug para ver si hay errores
+      - name: Build with Gradle
+        run: ./gradlew assembleDebug --stacktrace
 
-      - name: Subir APK a GitHub
+      # Opcional: Esto sube el APK generado a GitHub para que lo puedas descargar
+      - name: Upload APK
         uses: actions/upload-artifact@v4
         with:
-          name: cronofutbol-apk
+          name: app-debug
           path: app/build/outputs/apk/debug/app-debug.apk
