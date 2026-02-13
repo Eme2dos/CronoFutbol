@@ -14,7 +14,7 @@ interface AppStrings {
     val menuColores: String
     val menuIdioma: String
     val menuAyuda: String
-    val menuQuitarAnuncios: String // NUEVO
+    val menuQuitarAnuncios: String // NUEVO PREMIUM
     val appTitulo: String
     val btnPausar: String
     val btn1Tiempo: String
@@ -229,10 +229,216 @@ object FrStrings : AppStrings {
     override val ayudaPaso2 = "2. Appuyez sur '2ème MI-TEMPS' pour la seconde période (par défaut min 45)."
     override val ayudaPaso3 = "3. Configurez le début de la 2ème mi-temps dans 'Réglage Temps'."
     override val ayudaNota = "Note : Le chrono continue de tourner grâce à la notification."
-    override val ayudaBateriaTitulo = "Gestion Intelligente de la Batterie"
-    override val ayudaBateriaDesc = "Cette application utilise un fond noir pur pour économiser l'énergie (OLED). De plus, si vous mettez en pause et fermez l'app, le processus s'arrête complètement (0% consommation)."
+    override val ayudaBateriaTitulo = "Gestion Intelligente Batterie"
+    override val ayudaBateriaDesc = "L'app utilise un fond noir pur pour économiser l'énergie (OLED). De plus, si vous mettez en pause et fermez l'app, le processus s'arrête (0% consommation)."
     override val btnWeb = "Visiter le site web"
 }
 
 object ItStrings : AppStrings {
     override val menuTitulo = "MENU"
+    override val menuHistorial = "Cronologia"
+    override val menuSonidos = "Suoni"
+    override val menuTiempo = "Imposta Tempo"
+    override val menuColores = "Colori"
+    override val menuIdioma = "Lingua"
+    override val menuAyuda = "Aiuto"
+    override val menuQuitarAnuncios = "Rimuovi Annunci"
+    override val appTitulo = "CRONOFUTBOL"
+    override val btnPausar = "PAUSA"
+    override val btn1Tiempo = "1° TEMPO"
+    override val btn2Tiempo = "2° TEMPO"
+    override val btnReiniciar = "RESET"
+    override val desde = "Da"
+    override val guardarDialogTitulo = "Salva Partita"
+    override val guardarDialogMensaje = "Assegna un nome per identificare questa sessione:"
+    override val guardarDialogLabel = "Nome della partita"
+    override val btnGuardar = "Salva"
+    override val btnCancelar = "Annulla"
+    override val desarrolladoPor = "Sviluppato da MLaOrden"
+    override val historialTitulo = "CRONOLOGIA"
+    override val historialSwitch = "Registra sessioni"
+    override val historialVacio = "Nessuna partita salvata"
+    override val ajustesTiempoTitulo = "IMPOSTA 2° TEMPO"
+    override val ajustesTiempoDesc1 = "Configurazione dell'inizio del secondo tempo."
+    override val ajustesTiempoDesc2 = "Imposta il minuto da cui partirà il cronometro premendo '2° TEMPO'."
+    override val ajustesTiempoLabel = "Minuto di inizio:"
+    override val coloresTitulo = "COLORI"
+    override val coloresRestaurar = "Ripristina default"
+    override val sonidosTitulo = "SUONI"
+    override val sonidoSilencio = "Silenzioso"
+    override val sonidoSilencioDesc = "Nessun suono o vibrazione"
+    override val sonidoSonido = "Suono"
+    override val sonidoSonidoDesc = "Riproduce un tono al tocco"
+    override val sonidoVibracion = "Vibrazione"
+    override val sonidoVibracionDesc = "Vibra al tocco"
+    override val sonidoAmbos = "Suono + Vibrazione"
+    override val sonidoAmbosDesc = "Tono e vibrazione insieme"
+    override val btnElegirTono = "Scegli tono personalizzato"
+    override val idiomaTitulo = "LINGUA"
+    override val idiomaAuto = "Automatico"
+    override val idiomaAutoDesc = "Usa la lingua del dispositivo"
+    override val welcomeTitulo = "Benvenuto!"
+    override val welcomeDesc = "Affinché il cronometro funzioni anche a schermo spento, abbiamo bisogno del permesso per le notifiche."
+    override val welcomeBtn = "Continua e Abilita"
+    override val ayudaTitulo = "AIUTO"
+    override val ayudaIntro = "Guida rapida:"
+    override val ayudaPaso1 = "1. Premi '1° TEMPO' per iniziare da 00:00."
+    override val ayudaPaso2 = "2. Premi '2° TEMPO' per il secondo tempo (default min 45)."
+    override val ayudaPaso3 = "3. Configura l'inizio del 2° tempo in 'Imposta Tempo'."
+    override val ayudaNota = "Nota: Il cronometro continua a funzionare grazie alla notifica."
+    override val ayudaBateriaTitulo = "Gestione Intelligente Batteria"
+    override val ayudaBateriaDesc = "Questa app utilizza uno sfondo nero puro per risparmiare energia (OLED). Inoltre, se metti in pausa e chiudi l'app, il processo si ferma (0% consumi)."
+    override val btnWeb = "Visita il sito web"
+}
+
+object DeStrings : AppStrings {
+    override val menuTitulo = "MENÜ"
+    override val menuHistorial = "Verlauf"
+    override val menuSonidos = "Töne"
+    override val menuTiempo = "Zeit einstellen"
+    override val menuColores = "Farben"
+    override val menuIdioma = "Sprache"
+    override val menuAyuda = "Hilfe"
+    override val menuQuitarAnuncios = "Werbung entfernen"
+    override val appTitulo = "FUSSBALL TIMER"
+    override val btnPausar = "PAUSE"
+    override val btn1Tiempo = "1. HALBZEIT"
+    override val btn2Tiempo = "2. HALBZEIT"
+    override val btnReiniciar = "NEUSTART"
+    override val desde = "Ab"
+    override val guardarDialogTitulo = "Spiel speichern"
+    override val guardarDialogMensaje = "Geben Sie einen Namen für diese Sitzung ein:"
+    override val guardarDialogLabel = "Spielname"
+    override val btnGuardar = "Speichern"
+    override val btnCancelar = "Abbrechen"
+    override val desarrolladoPor = "Entwickelt von MLaOrden"
+    override val historialTitulo = "VERLAUF"
+    override val historialSwitch = "Sitzungen aufzeichnen"
+    override val historialVacio = "Keine Spiele gespeichert"
+    override val ajustesTiempoTitulo = "2. HALBZEIT EINSTELLEN"
+    override val ajustesTiempoDesc1 = "Konfiguration für den Beginn der zweiten Hälfte."
+    override val ajustesTiempoDesc2 = "Stellen Sie die Startminute ein, wenn Sie '2. HALBZEIT' drücken."
+    override val ajustesTiempoLabel = "Startminute:"
+    override val coloresTitulo = "FARBEN"
+    override val coloresRestaurar = "Standard wiederherstellen"
+    override val sonidosTitulo = "TÖNE"
+    override val sonidoSilencio = "Lautlos"
+    override val sonidoSilencioDesc = "Kein Ton oder Vibration"
+    override val sonidoSonido = "Ton"
+    override val sonidoSonidoDesc = "Spielt einen Ton beim Klicken"
+    override val sonidoVibracion = "Vibration"
+    override val sonidoVibracionDesc = "Vibriert beim Klicken"
+    override val sonidoAmbos = "Ton + Vibration"
+    override val sonidoAmbosDesc = "Ton und Vibration zusammen"
+    override val btnElegirTono = "Eigenen Ton wählen"
+    override val idiomaTitulo = "SPRACHE"
+    override val idiomaAuto = "Automatisch"
+    override val idiomaAutoDesc = "Gerätesprache verwenden"
+    override val welcomeTitulo = "Willkommen!"
+    override val welcomeDesc = "Damit der Timer auch bei ausgeschaltetem Bildschirm weiterläuft, benötigen wir die Benachrichtigungserlaubnis."
+    override val welcomeBtn = "Weiter & Aktivieren"
+    override val ayudaTitulo = "HILFE"
+    override val ayudaIntro = "Kurzanleitung:"
+    override val ayudaPaso1 = "1. Drücken Sie '1. HALBZEIT', um bei 00:00 zu starten."
+    override val ayudaPaso2 = "2. Drücken Sie '2. HALBZEIT' für die zweite Hälfte (Standard 45. Min)."
+    override val ayudaPaso3 = "3. Konfigurieren Sie den Start der 2. Hälfte in 'Zeit einstellen'."
+    override val ayudaNota = "Hinweis: Der Timer läuft dank der Benachrichtigung weiter."
+    override val ayudaBateriaTitulo = "Intelligentes Batteriemanagement"
+    override val ayudaBateriaDesc = "Diese App verwendet einen rein schwarzen Hintergrund, um Energie zu sparen (OLED). Wenn Sie pausieren und die App schließen, stoppt der Prozess vollständig."
+    override val btnWeb = "Website besuchen"
+}
+
+object PtStrings : AppStrings {
+    override val menuTitulo = "MENU"
+    override val menuHistorial = "Histórico"
+    override val menuSonidos = "Sons"
+    override val menuTiempo = "Ajustar Tempo"
+    override val menuColores = "Cores"
+    override val menuIdioma = "Idioma"
+    override val menuAyuda = "Ajuda"
+    override val menuQuitarAnuncios = "Remover Anúncios"
+    override val appTitulo = "CRONOFUTBOL"
+    override val btnPausar = "PAUSA"
+    override val btn1Tiempo = "1º TEMPO"
+    override val btn2Tiempo = "2º TEMPO"
+    override val btnReiniciar = "REINICIAR"
+    override val desde = "De"
+    override val guardarDialogTitulo = "Salvar Jogo"
+    override val guardarDialogMensaje = "Atribua um nome para identificar esta sessão:"
+    override val guardarDialogLabel = "Nome do jogo"
+    override val btnGuardar = "Salvar"
+    override val btnCancelar = "Cancelar"
+    override val desarrolladoPor = "Desenvolvido por MLaOrden"
+    override val historialTitulo = "HISTÓRICO"
+    override val historialSwitch = "Registrar sessões"
+    override val historialVacio = "Nenhum jogo salvo"
+    override val ajustesTiempoTitulo = "AJUSTAR 2º TEMPO"
+    override val ajustesTiempoDesc1 = "Configuração do início da segunda parte."
+    override val ajustesTiempoDesc2 = "Defina o minuto de início ao pressionar o botão '2º TEMPO'."
+    override val ajustesTiempoLabel = "Minuto de início:"
+    override val coloresTitulo = "CORES"
+    override val coloresRestaurar = "Restaurar padrão"
+    override val sonidosTitulo = "SONS"
+    override val sonidoSilencio = "Silêncio"
+    override val sonidoSilencioDesc = "Sem som ou vibração"
+    override val sonidoSonido = "Som"
+    override val sonidoSonidoDesc = "Toca um tom ao clicar"
+    override val sonidoVibracion = "Vibração"
+    override val sonidoVibracionDesc = "Vibra ao clicar"
+    override val sonidoAmbos = "Som + Vibração"
+    override val sonidoAmbosDesc = "Tom e vibração juntos"
+    override val btnElegirTono = "Escolher tom personalizado"
+    override val idiomaTitulo = "IDIOMA"
+    override val idiomaAuto = "Automático"
+    override val idiomaAutoDesc = "Usa o idioma do dispositivo"
+    override val welcomeTitulo = "Bem-vindo!"
+    override val welcomeDesc = "Para manter o cronômetro funcionando com a tela desligada, precisamos de permissão para notificações."
+    override val welcomeBtn = "Continuar e Habilitar"
+    override val ayudaTitulo = "AJUDA"
+    override val ayudaIntro = "Guia rápido:"
+    override val ayudaPaso1 = "1. Pressione '1º TEMPO' para começar do 00:00."
+    override val ayudaPaso2 = "2. Pressione '2º TEMPO' para o segundo tempo (padrão min 45)."
+    override val ayudaPaso3 = "3. Configure o início do 2º tempo em 'Ajustar Tempo'."
+    override val ayudaNota = "Nota: O cronômetro continua funcionando graças à notificação."
+    override val ayudaBateriaTitulo = "Gestão Inteligente de Bateria"
+    override val ayudaBateriaDesc = "Este app usa fundo preto puro para economizar energia (OLED). Além disso, se você pausar e fechar o app, o processo para completamente (consumo 0%)."
+    override val btnWeb = "Visitar site oficial"
+}
+
+enum class LanguageCode { AUTO, ES, EN, FR, IT, DE, PT }
+
+object LanguageManager {
+    var selectedLanguage by mutableStateOf(LanguageCode.AUTO)
+
+    val s: AppStrings
+        get() = when (selectedLanguage) {
+            LanguageCode.ES -> EsStrings
+            LanguageCode.EN -> EnStrings
+            LanguageCode.FR -> FrStrings
+            LanguageCode.IT -> ItStrings
+            LanguageCode.DE -> DeStrings
+            LanguageCode.PT -> PtStrings
+            LanguageCode.AUTO -> {
+                when (Locale.getDefault().language) {
+                    "es" -> EsStrings
+                    "fr" -> FrStrings
+                    "it" -> ItStrings
+                    "de" -> DeStrings
+                    "pt" -> PtStrings
+                    else -> EnStrings
+                }
+            }
+        }
+
+    fun init(context: Context) {
+        val prefs = context.getSharedPreferences("CronoPrefs", Context.MODE_PRIVATE)
+        val langStr = prefs.getString("language", "AUTO") ?: "AUTO"
+        selectedLanguage = try { LanguageCode.valueOf(langStr) } catch(e: Exception) { LanguageCode.AUTO }
+    }
+
+    fun setLanguage(context: Context, code: LanguageCode) {
+        selectedLanguage = code
+        val prefs = context.getSharedPreferences("CronoPrefs", Context.MODE_PRIVATE)
+        prefs.edit().putString("language", code.name).apply()
+    }
+}
