@@ -36,7 +36,7 @@ fun OnboardingScreen(onFinish: () -> Unit) {
         onResult = { _ -> onFinish() }
     )
 
-    // OBTENER LA VERSIÓN DE LA APP AUTOMÁTICAMENTE
+    // Leer la versión automáticamente desde Gradle
     val appVersion = remember {
         try {
             val packageInfo = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
@@ -59,7 +59,7 @@ fun OnboardingScreen(onFinish: () -> Unit) {
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ) {
-        // LOGO
+        // Logo de la App
         Image(
             painter = painterResource(id = R.drawable.logo_app),
             contentDescription = "Logo App",
@@ -68,7 +68,7 @@ fun OnboardingScreen(onFinish: () -> Unit) {
 
         Spacer(modifier = Modifier.height(40.dp))
 
-        // TÍTULO
+        // Título
         Text(
             text = LanguageManager.s.appTitulo,
             style = TextStyle(
@@ -81,7 +81,7 @@ fun OnboardingScreen(onFinish: () -> Unit) {
 
         Spacer(modifier = Modifier.height(16.dp))
 
-        // BIENVENIDA
+        // Subtítulo Bienvenida
         Text(
             text = LanguageManager.s.welcomeTitulo,
             fontSize = 22.sp,
@@ -91,7 +91,7 @@ fun OnboardingScreen(onFinish: () -> Unit) {
 
         Spacer(modifier = Modifier.height(24.dp))
 
-        // DESCRIPCIÓN
+        // Explicación de permisos
         Text(
             text = LanguageManager.s.welcomeDesc,
             fontSize = 16.sp,
@@ -102,7 +102,7 @@ fun OnboardingScreen(onFinish: () -> Unit) {
 
         Spacer(modifier = Modifier.height(60.dp))
 
-        // BOTÓN
+        // Botón de Continuar
         Button(
             onClick = {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
@@ -125,8 +125,9 @@ fun OnboardingScreen(onFinish: () -> Unit) {
             )
         }
 
-        // --- VERSIÓN DE LA APP ---
         Spacer(modifier = Modifier.height(30.dp))
+
+        // Versión de la app
         Text(
             text = appVersion,
             color = Color.DarkGray,
