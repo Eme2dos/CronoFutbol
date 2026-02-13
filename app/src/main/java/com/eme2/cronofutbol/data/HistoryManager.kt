@@ -22,17 +22,20 @@ object HistoryManager {
         }
     }
 
-    fun registrarT1(segundos: Long) { tempDuracion1 = formatear(segundos) }
+    fun registrarT1(segundos: Long) {
+        tempDuracion1 = formatear(segundos)
+    }
 
     fun registrarT2(segundosTotal: Long) {
-        val inicio2 = (TimeManager.secondHalfStartMinute.toLongOrNull() ?: 45L) * 60
-        val duracionReal = if (segundosTotal > inicio2) segundosTotal - inicio2 else 0
-        tempDuracion2 = formatear(duracionReal)
+        // CORRECCIÓN:
+        // Antes restábamos el tiempo de inicio (ej: 45 min) para obtener la duración "jugada".
+        // Ahora usamos 'segundosTotal' directamente para mostrar el "Minuto de Partido" (ej: 45:02).
+        tempDuracion2 = formatear(segundosTotal)
     }
 
     fun guardarSesion(nombre: String) {
         if (tempDuracion1 != null) {
-            // LÓGICA NUEVA: ¿Estamos en modo marcador?
+            // Verificamos si estamos en modo marcador para guardar datos extra
             val esMarcador = MatchManager.isScoreboardEnabled
 
             val nuevaSesion = SesionPartido(
@@ -40,8 +43,9 @@ object HistoryManager {
                 estadio = if (esMarcador) MatchManager.estadio else "",
                 fecha = if (fechaSesion.isNotEmpty()) fechaSesion else SimpleDateFormat("dd/MM/yyyy", Locale.getDefault()).format(Date()),
                 duracion1 = tempDuracion1 ?: "00:00",
-                duracion2 = tempDuracion2 ?: "00:00",
-                // Guardamos datos del marcador si aplica
+                duracion2 = tempDuracion2 ?: "00:00", // Ahora guardará el minuto final (ej: 90:00)
+
+                // Datos del marcador
                 marcadorLocal = if (esMarcador) MatchManager.golesLocal else null,
                 marcadorVisitante = if (esMarcador) MatchManager.golesVisitante else null,
                 nombreLocal = if (esMarcador) MatchManager.equipoLocal else "Local",
@@ -51,7 +55,7 @@ object HistoryManager {
 
             sesiones.add(0, nuevaSesion)
             limpiarTemp()
-            if (esMarcador) MatchManager.resetMatch() // Reseteamos el marcador tras guardar
+            if (esMarcador) MatchManager.resetMatch()
         }
     }
 
@@ -62,7 +66,8 @@ object HistoryManager {
     }
 
     private fun formatear(seg: Long): String {
-        val m = seg / 60; val s = seg % 60
+        val m = seg / 60;
+        val s = seg % 60;
         return String.format("%02d:%02d", m, s)
     }
 }
