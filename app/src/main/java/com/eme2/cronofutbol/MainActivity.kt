@@ -74,8 +74,12 @@ fun CronoFutbolApp() {
 
     fun navigateWithAd(route: String) {
         scope.launch { drawerState.close() }
+        // 1. Navegamos INMEDIATAMENTE a la nueva pantalla
+        navController.navigate(route)
+
+        // 2. Mostramos el anuncio por encima de la nueva pantalla
         AdManager.showInterstitial(context) {
-            navController.navigate(route)
+            // Lo dejamos vacío, ya no necesitamos navegar aquí al terminar
         }
     }
 
