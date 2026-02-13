@@ -39,15 +39,13 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        // Inicializar Idioma y AdMob
         LanguageManager.init(this)
         MobileAds.initialize(this) {}
         AdManager.loadInterstitial(this)
 
-        // Comprobamos si el usuario ya pasó por el Onboarding (y simulamos estado Premium)
         val prefs = getSharedPreferences("CronoPrefs", Context.MODE_PRIVATE)
         val onboardingCompleto = prefs.getBoolean("onboarding_completed", false)
-        AdManager.isPremium = prefs.getBoolean("is_premium", false) // Por defecto false
+        AdManager.isPremium = prefs.getBoolean("is_premium", false)
 
         setContent {
             MaterialTheme(colorScheme = darkColorScheme()) {
@@ -57,7 +55,6 @@ class MainActivity : ComponentActivity() {
                     OnboardingScreen(onFinish = {
                         prefs.edit().putBoolean("onboarding_completed", true).apply()
                         showOnboarding = false
-                        // Mostrar anuncio justo después del Onboarding
                         AdManager.showInterstitial(this@MainActivity) {}
                     })
                 } else {
@@ -75,7 +72,6 @@ fun CronoFutbolApp() {
     val scope = rememberCoroutineScope()
     val context = LocalContext.current as Activity
 
-    // Función auxiliar para navegar con anuncio
     fun navigateWithAd(route: String) {
         scope.launch { drawerState.close() }
         AdManager.showInterstitial(context) {
@@ -104,7 +100,6 @@ fun CronoFutbolApp() {
                 }
 
                 Column(modifier = Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(12.dp)) {
-                    // Navegación normal con anuncios intercalados
                     ModernDrawerItem(LanguageManager.s.menuHistorial, Icons.Default.History) { navigateWithAd("history") }
                     ModernDrawerItem(LanguageManager.s.menuSonidos, Icons.Default.MusicNote) { navigateWithAd("settings") }
                     ModernDrawerItem(LanguageManager.s.menuTiempo, Icons.Default.AccessTime) { navigateWithAd("time_settings") }
@@ -112,20 +107,8 @@ fun CronoFutbolApp() {
                     ModernDrawerItem(LanguageManager.s.menuIdioma, Icons.Default.Language) { navigateWithAd("language") }
                     ModernDrawerItem(LanguageManager.s.menuAyuda, Icons.Default.Help) { navigateWithAd("help") }
 
-                    Spacer(modifier = Modifier.height(20.dp))
-                    HorizontalDivider(color = SportGray)
-                    Spacer(modifier = Modifier.height(20.dp))
-
-                    // BOTÓN PREMIUM
-                    if (!AdManager.isPremium) {
-                        ModernDrawerItem(LanguageManager.s.menuQuitarAnuncios, Icons.Default.WorkspacePremium) {
-                            scope.launch { drawerState.close() }
-                            // Por ahora simulamos la compra activando el Premium.
-                            // Más adelante aquí conectaremos la pasarela de pago de Google Play.
-                            AdManager.isPremium = true
-                            context.getSharedPreferences("CronoPrefs", Context.MODE_PRIVATE).edit().putBoolean("is_premium", true).apply()
-                        }
-                    }
+                    // BOTÓN PREMIUM AHORA ESTÁ INTEGRADO COMO UNA PANTALLA MÁS
+                    ModernDrawerItem(LanguageManager.s.menuQuitarAnuncios, Icons.Default.WorkspacePremium) { navigateWithAd("premium") }
                 }
             }
         }
@@ -138,6 +121,9 @@ fun CronoFutbolApp() {
             composable("history") { HistoryScreen(onBackClick = { navController.popBackStack() }) }
             composable("language") { LanguageScreen(onBackClick = { navController.popBackStack() }) }
             composable("help") { HelpScreen(onBackClick = { navController.popBackStack() }) }
+
+            // NUEVA RUTA PREMIUM
+            composable("premium") { PremiumScreen(onBackClick = { navController.popBackStack() }) }
         }
     }
 }

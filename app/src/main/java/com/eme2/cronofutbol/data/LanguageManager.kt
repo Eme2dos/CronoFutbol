@@ -14,7 +14,7 @@ interface AppStrings {
     val menuColores: String
     val menuIdioma: String
     val menuAyuda: String
-    val menuQuitarAnuncios: String // NUEVO PREMIUM
+    val menuQuitarAnuncios: String
     val appTitulo: String
     val btnPausar: String
     val btn1Tiempo: String
@@ -61,6 +61,13 @@ interface AppStrings {
     val ayudaBateriaTitulo: String
     val ayudaBateriaDesc: String
     val btnWeb: String
+    // NUEVOS TEXTOS PREMIUM
+    val premiumTitulo: String
+    val premiumDesc: String
+    val premiumVentaja1: String
+    val premiumVentaja2: String
+    val premiumBtnComprar: String
+    val premiumGracias: String
 }
 
 object EsStrings : AppStrings {
@@ -71,7 +78,7 @@ object EsStrings : AppStrings {
     override val menuColores = "Colores"
     override val menuIdioma = "Idioma"
     override val menuAyuda = "Ayuda"
-    override val menuQuitarAnuncios = "Quitar Anuncios"
+    override val menuQuitarAnuncios = "Versión PRO"
     override val appTitulo = "CRONOFUTBOL"
     override val btnPausar = "PAUSAR"
     override val btn1Tiempo = "1 TIEMPO"
@@ -118,6 +125,13 @@ object EsStrings : AppStrings {
     override val ayudaBateriaTitulo = "Gestión Inteligente de Batería"
     override val ayudaBateriaDesc = "Esta app usa fondo negro puro para ahorrar energía en pantallas OLED. Además, si pausas el cronómetro y cierras la app, el proceso se detiene completamente para un consumo 0%."
     override val btnWeb = "Visitar web oficial"
+    // PREMIUM ES
+    override val premiumTitulo = "HAZTE PRO"
+    override val premiumDesc = "Desbloquea todo el potencial de CronoFutbol y apoya el desarrollo continuo de la app."
+    override val premiumVentaja1 = "Experiencia 100% sin anuncios."
+    override val premiumVentaja2 = "Apoya al desarrollador para futuras mejoras."
+    override val premiumBtnComprar = "Comprar en Google Play"
+    override val premiumGracias = "¡Ya eres usuario PRO! Disfruta de la experiencia sin anuncios."
 }
 
 object EnStrings : AppStrings {
@@ -128,7 +142,7 @@ object EnStrings : AppStrings {
     override val menuColores = "Colors"
     override val menuIdioma = "Language"
     override val menuAyuda = "Help"
-    override val menuQuitarAnuncios = "Remove Ads"
+    override val menuQuitarAnuncios = "PRO Version"
     override val appTitulo = "FOOTBALL TIMER"
     override val btnPausar = "PAUSE"
     override val btn1Tiempo = "1st HALF"
@@ -175,6 +189,13 @@ object EnStrings : AppStrings {
     override val ayudaBateriaTitulo = "Smart Battery Management"
     override val ayudaBateriaDesc = "This app uses a pure black background to save power on OLED screens. Also, if you pause the timer and close the app, the process stops completely for 0% consumption."
     override val btnWeb = "Visit official website"
+    // PREMIUM EN
+    override val premiumTitulo = "GO PRO"
+    override val premiumDesc = "Unlock the full potential of Football Timer and support ongoing development."
+    override val premiumVentaja1 = "100% Ad-Free experience."
+    override val premiumVentaja2 = "Support the developer for future updates."
+    override val premiumBtnComprar = "Buy on Google Play"
+    override val premiumGracias = "You are already a PRO user! Enjoy the ad-free experience."
 }
 
 object FrStrings : AppStrings {
@@ -185,7 +206,7 @@ object FrStrings : AppStrings {
     override val menuColores = "Couleurs"
     override val menuIdioma = "Langue"
     override val menuAyuda = "Aide"
-    override val menuQuitarAnuncios = "Supprimer les pubs"
+    override val menuQuitarAnuncios = "Version PRO"
     override val appTitulo = "CHRONO FOOT"
     override val btnPausar = "PAUSE"
     override val btn1Tiempo = "1ère MI-TEMPS"
@@ -232,6 +253,13 @@ object FrStrings : AppStrings {
     override val ayudaBateriaTitulo = "Gestion Intelligente Batterie"
     override val ayudaBateriaDesc = "L'app utilise un fond noir pur pour économiser l'énergie (OLED). De plus, si vous mettez en pause et fermez l'app, le processus s'arrête (0% consommation)."
     override val btnWeb = "Visiter le site web"
+    // PREMIUM FR
+    override val premiumTitulo = "DEVENIR PRO"
+    override val premiumDesc = "Débloquez tout le potentiel de Chrono Foot et soutenez le développement."
+    override val premiumVentaja1 = "Expérience 100% sans publicité."
+    override val premiumVentaja2 = "Soutenez le développeur pour les futures mises à jour."
+    override val premiumBtnComprar = "Acheter sur Google Play"
+    override val premiumGracias = "Vous êtes déjà un utilisateur PRO ! Profitez-en."
 }
 
 object ItStrings : AppStrings {
@@ -242,7 +270,7 @@ object ItStrings : AppStrings {
     override val menuColores = "Colori"
     override val menuIdioma = "Lingua"
     override val menuAyuda = "Aiuto"
-    override val menuQuitarAnuncios = "Rimuovi Annunci"
+    override val menuQuitarAnuncios = "Versione PRO"
     override val appTitulo = "CRONOFUTBOL"
     override val btnPausar = "PAUSA"
     override val btn1Tiempo = "1° TEMPO"
@@ -289,6 +317,13 @@ object ItStrings : AppStrings {
     override val ayudaBateriaTitulo = "Gestione Intelligente Batteria"
     override val ayudaBateriaDesc = "Questa app utilizza uno sfondo nero puro per risparmiare energia (OLED). Inoltre, se metti in pausa e chiudi l'app, il processo si ferma (0% consumi)."
     override val btnWeb = "Visita il sito web"
+    // PREMIUM IT
+    override val premiumTitulo = "DIVENTA PRO"
+    override val premiumDesc = "Sblocca tutto il potenziale di Cronofutbol e supporta lo sviluppo."
+    override val premiumVentaja1 = "Esperienza 100% senza pubblicità."
+    override val premiumVentaja2 = "Supporta lo sviluppatore per futuri aggiornamenti."
+    override val premiumBtnComprar = "Acquista su Google Play"
+    override val premiumGracias = "Sei già un utente PRO! Goditi l'app."
 }
 
 object DeStrings : AppStrings {
@@ -299,7 +334,7 @@ object DeStrings : AppStrings {
     override val menuColores = "Farben"
     override val menuIdioma = "Sprache"
     override val menuAyuda = "Hilfe"
-    override val menuQuitarAnuncios = "Werbung entfernen"
+    override val menuQuitarAnuncios = "PRO-Version"
     override val appTitulo = "FUSSBALL TIMER"
     override val btnPausar = "PAUSE"
     override val btn1Tiempo = "1. HALBZEIT"
@@ -346,6 +381,13 @@ object DeStrings : AppStrings {
     override val ayudaBateriaTitulo = "Intelligentes Batteriemanagement"
     override val ayudaBateriaDesc = "Diese App verwendet einen rein schwarzen Hintergrund, um Energie zu sparen (OLED). Wenn Sie pausieren und die App schließen, stoppt der Prozess vollständig."
     override val btnWeb = "Website besuchen"
+    // PREMIUM DE
+    override val premiumTitulo = "PRO WERDEN"
+    override val premiumDesc = "Schalte das volle Potenzial von Fussball Timer frei."
+    override val premiumVentaja1 = "100% werbefreies Erlebnis."
+    override val premiumVentaja2 = "Unterstütze den Entwickler."
+    override val premiumBtnComprar = "Kaufen bei Google Play"
+    override val premiumGracias = "Du bist bereits PRO-Nutzer! Viel Spaß."
 }
 
 object PtStrings : AppStrings {
@@ -356,7 +398,7 @@ object PtStrings : AppStrings {
     override val menuColores = "Cores"
     override val menuIdioma = "Idioma"
     override val menuAyuda = "Ajuda"
-    override val menuQuitarAnuncios = "Remover Anúncios"
+    override val menuQuitarAnuncios = "Versão PRO"
     override val appTitulo = "CRONOFUTBOL"
     override val btnPausar = "PAUSA"
     override val btn1Tiempo = "1º TEMPO"
@@ -403,6 +445,13 @@ object PtStrings : AppStrings {
     override val ayudaBateriaTitulo = "Gestão Inteligente de Bateria"
     override val ayudaBateriaDesc = "Este app usa fundo preto puro para economizar energia (OLED). Além disso, se você pausar e fechar o app, o processo para completamente (consumo 0%)."
     override val btnWeb = "Visitar site oficial"
+    // PREMIUM PT
+    override val premiumTitulo = "SEJA PRO"
+    override val premiumDesc = "Desbloqueie todo o potencial do Cronofutbol e apoie o desenvolvimento."
+    override val premiumVentaja1 = "Experiência 100% sem anúncios."
+    override val premiumVentaja2 = "Apoie o desenvolvedor para melhorias futuras."
+    override val premiumBtnComprar = "Comprar no Google Play"
+    override val premiumGracias = "Você já é um usuário PRO! Aproveite."
 }
 
 enum class LanguageCode { AUTO, ES, EN, FR, IT, DE, PT }
