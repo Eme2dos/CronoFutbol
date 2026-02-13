@@ -1,5 +1,6 @@
 package com.eme2.cronofutbol
 
+import android.app.Activity
 import android.content.Context
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -13,10 +14,12 @@ import androidx.compose.material.icons.filled.History
 import androidx.compose.material.icons.filled.Language
 import androidx.compose.material.icons.filled.MusicNote
 import androidx.compose.material.icons.filled.Palette
+import androidx.compose.material.icons.filled.WorkspacePremium
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
@@ -28,26 +31,34 @@ import androidx.navigation.compose.rememberNavController
 import com.eme2.cronofutbol.data.*
 import com.eme2.cronofutbol.ui.components.ModernDrawerItem
 import com.eme2.cronofutbol.ui.screens.*
+import com.eme2.cronofutbol.utils.AdManager
+import com.google.android.gms.ads.MobileAds
 import kotlinx.coroutines.launch
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        LanguageManager.init(this)
 
-        // Comprobamos si el usuario ya pasó por el Onboarding
+        // Inicializar Idioma y AdMob
+        LanguageManager.init(this)
+        MobileAds.initialize(this) {}
+        AdManager.loadInterstitial(this)
+
+        // Comprobamos si el usuario ya pasó por el Onboarding (y simulamos estado Premium)
         val prefs = getSharedPreferences("CronoPrefs", Context.MODE_PRIVATE)
         val onboardingCompleto = prefs.getBoolean("onboarding_completed", false)
+        AdManager.isPremium = prefs.getBoolean("is_premium", false) // Por defecto false
 
         setContent {
             MaterialTheme(colorScheme = darkColorScheme()) {
                 var showOnboarding by remember { mutableStateOf(!onboardingCompleto) }
 
-                // Lógica de navegación inicial
                 if (showOnboarding) {
                     OnboardingScreen(onFinish = {
                         prefs.edit().putBoolean("onboarding_completed", true).apply()
                         showOnboarding = false
+                        // Mostrar anuncio justo después del Onboarding
+                        AdManager.showInterstitial(this@MainActivity) {}
                     })
                 } else {
                     CronoFutbolApp()
@@ -62,6 +73,15 @@ fun CronoFutbolApp() {
     val navController = rememberNavController()
     val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
     val scope = rememberCoroutineScope()
+    val context = LocalContext.current as Activity
+
+    // Función auxiliar para navegar con anuncio
+    fun navigateWithAd(route: String) {
+        scope.launch { drawerState.close() }
+        AdManager.showInterstitial(context) {
+            navController.navigate(route)
+        }
+    }
 
     ModalNavigationDrawer(
         drawerState = drawerState,
@@ -84,12 +104,28 @@ fun CronoFutbolApp() {
                 }
 
                 Column(modifier = Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(12.dp)) {
-                    ModernDrawerItem(LanguageManager.s.menuHistorial, Icons.Default.History) { navController.navigate("history"); scope.launch { drawerState.close() } }
-                    ModernDrawerItem(LanguageManager.s.menuSonidos, Icons.Default.MusicNote) { navController.navigate("settings"); scope.launch { drawerState.close() } }
-                    ModernDrawerItem(LanguageManager.s.menuTiempo, Icons.Default.AccessTime) { navController.navigate("time_settings"); scope.launch { drawerState.close() } }
-                    ModernDrawerItem(LanguageManager.s.menuColores, Icons.Default.Palette) { navController.navigate("colors"); scope.launch { drawerState.close() } }
-                    ModernDrawerItem(LanguageManager.s.menuIdioma, Icons.Default.Language) { navController.navigate("language"); scope.launch { drawerState.close() } }
-                    ModernDrawerItem(LanguageManager.s.menuAyuda, Icons.Default.Help) { navController.navigate("help"); scope.launch { drawerState.close() } }
+                    // Navegación normal con anuncios intercalados
+                    ModernDrawerItem(LanguageManager.s.menuHistorial, Icons.Default.History) { navigateWithAd("history") }
+                    ModernDrawerItem(LanguageManager.s.menuSonidos, Icons.Default.MusicNote) { navigateWithAd("settings") }
+                    ModernDrawerItem(LanguageManager.s.menuTiempo, Icons.Default.AccessTime) { navigateWithAd("time_settings") }
+                    ModernDrawerItem(LanguageManager.s.menuColores, Icons.Default.Palette) { navigateWithAd("colors") }
+                    ModernDrawerItem(LanguageManager.s.menuIdioma, Icons.Default.Language) { navigateWithAd("language") }
+                    ModernDrawerItem(LanguageManager.s.menuAyuda, Icons.Default.Help) { navigateWithAd("help") }
+
+                    Spacer(modifier = Modifier.height(20.dp))
+                    HorizontalDivider(color = SportGray)
+                    Spacer(modifier = Modifier.height(20.dp))
+
+                    // BOTÓN PREMIUM
+                    if (!AdManager.isPremium) {
+                        ModernDrawerItem(LanguageManager.s.menuQuitarAnuncios, Icons.Default.WorkspacePremium) {
+                            scope.launch { drawerState.close() }
+                            // Por ahora simulamos la compra activando el Premium.
+                            // Más adelante aquí conectaremos la pasarela de pago de Google Play.
+                            AdManager.isPremium = true
+                            context.getSharedPreferences("CronoPrefs", Context.MODE_PRIVATE).edit().putBoolean("is_premium", true).apply()
+                        }
+                    }
                 }
             }
         }

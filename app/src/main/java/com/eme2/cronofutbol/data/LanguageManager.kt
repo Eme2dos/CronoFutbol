@@ -62,6 +62,8 @@ interface AppStrings {
     val ayudaBateriaTitulo: String
     val ayudaBateriaDesc: String
     val btnWeb: String
+    // ADMOB
+    val menuQuitarAnuncios: String
 }
 
 object EsStrings : AppStrings {
@@ -119,6 +121,8 @@ object EsStrings : AppStrings {
     override val ayudaBateriaTitulo = "Gestión Inteligente de Batería"
     override val ayudaBateriaDesc = "Esta app usa fondo negro puro para ahorrar energía en pantallas OLED. Además, si pausas el cronómetro y cierras la app, el proceso se detiene completamente para un consumo 0%."
     override val btnWeb = "Visitar web oficial"
+    //ADMOB
+    override val menuQuitarAnuncios = "Quitar Anuncios"
 }
 
 object EnStrings : AppStrings {
@@ -176,6 +180,8 @@ object EnStrings : AppStrings {
     override val ayudaBateriaTitulo = "Smart Battery Management"
     override val ayudaBateriaDesc = "This app uses a pure black background to save power on OLED screens. Also, if you pause the timer and close the app, the process stops completely for 0% consumption."
     override val btnWeb = "Visit official website"
+    //ADMOB
+    EnStrings: override val menuQuitarAnuncios = "Remove Ads"
 }
 
 object FrStrings : AppStrings {
@@ -233,6 +239,8 @@ object FrStrings : AppStrings {
     override val ayudaBateriaTitulo = "Gestion Intelligente de la Batterie"
     override val ayudaBateriaDesc = "Cette application utilise un fond noir pur pour économiser l'énergie (OLED). De plus, si vous mettez en pause et fermez l'app, le processus s'arrête complètement (0% consommation)."
     override val btnWeb = "Visiter le site web"
+    //ADMOB
+    FrStrings: override val menuQuitarAnuncios = "Supprimer les pubs"
 }
 
 object ItStrings : AppStrings {
@@ -290,6 +298,8 @@ object ItStrings : AppStrings {
     override val ayudaBateriaTitulo = "Gestione Intelligente Batteria"
     override val ayudaBateriaDesc = "Questa app utilizza uno sfondo nero puro per risparmiare energia (OLED). Inoltre, se metti in pausa e chiudi l'app, il processo si ferma completamente (0% consumi)."
     override val btnWeb = "Visita il sito web"
+    //ADMOB
+    ItStrings: override val menuQuitarAnuncios = "Rimuovi Annunci"
 }
 
 object DeStrings : AppStrings {
@@ -347,6 +357,8 @@ object DeStrings : AppStrings {
     override val ayudaBateriaTitulo = "Intelligentes Batteriemanagement"
     override val ayudaBateriaDesc = "Diese App verwendet einen rein schwarzen Hintergrund, um Energie zu sparen (OLED). Wenn Sie pausieren und die App schließen, stoppt der Prozess vollständig (0% Verbrauch)."
     override val btnWeb = "Website besuchen"
+    //ADMOB
+    DeStrings: override val menuQuitarAnuncios = "Werbung entfernen"
 }
 
 object PtStrings : AppStrings {
@@ -404,6 +416,8 @@ object PtStrings : AppStrings {
     override val ayudaBateriaTitulo = "Gestão Inteligente de Bateria"
     override val ayudaBateriaDesc = "Este app usa fundo preto puro para economizar energia (OLED). Além disso, se você pausar e fechar o app, o processo para completamente (consumo 0%)."
     override val btnWeb = "Visitar site oficial"
+    //ADMOB
+    PtStrings: override val menuQuitarAnuncios = "Remover Anúncios"
 }
 
 enum class LanguageCode { AUTO, ES, EN, FR, IT, DE, PT }
