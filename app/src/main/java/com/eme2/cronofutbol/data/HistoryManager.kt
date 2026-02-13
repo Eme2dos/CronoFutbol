@@ -4,7 +4,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
-import com.eme2.cronofutbol.data.model.SesionPartido // Importante importar el modelo
+import com.eme2.cronofutbol.data.model.SesionPartido
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
@@ -27,9 +27,10 @@ object HistoryManager {
     }
 
     fun registrarT2(segundosTotal: Long) {
-        val inicio2 = (TimeManager.secondHalfStartMinute.toLongOrNull() ?: 45L) * 60
-        val duracionReal = if (segundosTotal > inicio2) segundosTotal - inicio2 else 0
-        tempDuracion2 = formatear(duracionReal)
+        // --- AQUÍ ESTABA EL ERROR ---
+        // Antes la app restaba el tiempo inicial. Ahora simplemente coge el tiempo
+        // del reloj tal cual está (ej: 45:04) y lo guarda directamente en la tarjeta.
+        tempDuracion2 = formatear(segundosTotal)
     }
 
     fun guardarSesion(nombre: String) {
